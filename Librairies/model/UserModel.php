@@ -14,13 +14,14 @@ class UserModel
     }
     public function add(User $user)
     {
-        $q = $this->db->prepare('INSERT INTO user(nom, prenom , email, lieu, niveau , userAdd) VALUES(:nom, :prenom, :email, :lieu, :niveau, :userAdd');
+        $q = $this->db->prepare('INSERT INTO user(nom, prenom , email, lieu, niveau , userAdd, userModif) VALUES(:nom, :prenom, :email, :lieu, :niveau, :userAdd, ""');
     
         $q->bindValue(':nom', $user->nom(),PDO::PARAM_STR);
         $q->bindValue(':prenom', $user->prenom(), PDO::PARAM_STR);
         $q->bindValue(':email', $user->email(), PDO::PARAM_STR);
         $q->bindValue(':lieu', $user->lieu(), PDO::PARAM_STR);
         $q->bindValue(':userAdd', $user->userAdd(), PDO::PARAM_STR);
+        $q->bindValue(':userModif', '');
 
         $q->execute();
     }
@@ -51,7 +52,7 @@ class UserModel
         $q->bindValue(':lieu', $user->lieu(), PDO::PARAM_STR );
         $q->bindValue(':niveau', $user->niveau(), PDO::PARAM_INT);
         $q->bindValue(':userModif', $user->userModif(),PDO::PARAM_STR);
-        $q->bindValue(':id', $billet->id(), PDO::PARAM_INT);
+        $q->bindValue(':id', $user->id(), PDO::PARAM_INT);
 
         $q->execute();
     }
