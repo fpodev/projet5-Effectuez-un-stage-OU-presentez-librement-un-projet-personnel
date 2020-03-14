@@ -8,6 +8,7 @@ class User
     private $nom;
     private $prenom;
     private $email;
+    private $pwd;
     private $lieu;
     private $niveau;
     private $userAdd;
@@ -17,7 +18,7 @@ class User
     const PRENOM_INVALIDE = 2;
     const EMAIL_INVALIDE = 3;
     const USERADD_INVALIDE = 4;
-    const LIEU_INVALIDE = 5;
+    const LIEU_INVALIDE = 5;    
     
     public function __construct($valeurs=[])
     {
@@ -86,7 +87,7 @@ class User
     }
     public function setEmail($email)
     {
-       if(!is_string($email)|| empty($email) || !preg_match('/(@)/' , $email)) 
+       if(!is_string($email)|| empty($email) || !preg_match('/(@)(.)/' , $email)) 
        {
            $this->erreurs[] = self::EMAIL_INVALIDE;
        }
@@ -95,9 +96,27 @@ class User
            $this->email = $email;
        }
     }
+    public function setPwd($pwd)
+    {
+        if(!is_string($pwd)|| empty($pdw)) 
+       {
+           $this->erreurs[] = self::EMAIL_INVALIDE;
+       }
+       else
+       {
+           $this->pwd = $pwd;
+       }    
+    }
     public function setNiveau($niveau)
     {
-        $this->niveau = (int) $niveau;
+        if(!empty($niveau))
+        {
+            $this->erreurs[] = self::NIVEAU_INVALIDE;
+        }
+        else
+        {
+            $this->niveau = (int) $niveau;
+        }
     }
     public function setUserAdd($userAdd)
     {
@@ -138,6 +157,10 @@ class User
     public function email()
     {
         return $this->email;
+    }
+    public function pwd()
+    {
+        return $this->pwd;
     }
     public function niveau()
     {
