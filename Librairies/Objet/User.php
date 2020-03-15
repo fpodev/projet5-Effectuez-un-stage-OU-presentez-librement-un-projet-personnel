@@ -16,9 +16,7 @@ class User
 
     const NOM_INVALIDE = 1;
     const PRENOM_INVALIDE = 2;
-    const EMAIL_INVALIDE = 3;
-    const USERADD_INVALIDE = 4;
-    const LIEU_INVALIDE = 5;    
+    const EMAIL_INVALIDE = 3;       
     
     public function __construct($valeurs=[])
     {
@@ -98,7 +96,7 @@ class User
     }
     public function setPwd($pwd)
     {
-        if(!is_string($pwd)|| empty($pdw)) 
+        if(!is_string($pwd) || empty($pdw)) 
        {
            $this->erreurs[] = self::EMAIL_INVALIDE;
        }
@@ -109,25 +107,18 @@ class User
     }
     public function setNiveau($niveau)
     {
-        if(!empty($niveau))
+        if(!is_string($niveau) || empty($niveau)) 
         {
             $this->erreurs[] = self::NIVEAU_INVALIDE;
         }
         else
         {
-            $this->niveau = (int) $niveau;
+            $this->niveau = $niveau;
         }
     }
     public function setUserAdd($userAdd)
-    {
-        if(!is_string($userAdd) || empty($userAdd))
-        {
-            $this->erreurs[] = self::USERADD_INVALIDE;
-        }
-        else
-        {
-            $this->userAdd = $userAdd;
-        }
+    {        
+        $this->userAdd = $userAdd;
     }
     public function setUserModif($userModif)
     {
