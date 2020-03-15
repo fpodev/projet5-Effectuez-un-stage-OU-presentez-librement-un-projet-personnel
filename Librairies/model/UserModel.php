@@ -14,12 +14,14 @@ class UserModel
     }
     public function add(User $user)
     {
-        $q = $this->db->prepare('INSERT INTO user(nom, prenom , email, lieu, niveau , userAdd, userModif) VALUES(:nom, :prenom, :email, :lieu, :niveau, :userAdd, ""');
+        $q = $this->db->prepare('INSERT INTO user(nom, prenom , email, pwd, lieu, niveau , userAdd, userModif) VALUES(:nom, :prenom, :email, :pwd, :lieu, :niveau, :userAdd, ""');
     
         $q->bindValue(':nom', $user->nom(),PDO::PARAM_STR);
         $q->bindValue(':prenom', $user->prenom(), PDO::PARAM_STR);
         $q->bindValue(':email', $user->email(), PDO::PARAM_STR);
+        $q->bindValue(':pwd', $user->pwd(), PDO::PARAM_STR);
         $q->bindValue(':lieu', $user->lieu(), PDO::PARAM_STR);
+        $q->bindValue(':niveau', $user->niveau(), PDO::PARAM_STR);
         $q->bindValue(':userAdd', $user->userAdd(), PDO::PARAM_STR);
         $q->bindValue(':userModif', '');
 
@@ -45,10 +47,11 @@ class UserModel
     }
     protected function update(User $user)
     {
-        $q = $this->db->prepare('UPDATE user SET nom = :nom, email = :email, lieu = :lieu, niveau = :niveau, userModif = :userModif WHERE id = :id');
+        $q = $this->db->prepare('UPDATE user SET nom = :nom, email = :email, pwd = :pwd, lieu = :lieu, niveau = :niveau, userModif = :userModif WHERE id = :id');
 
         $q->bindValue(':nom', $user->nom(), PDO::PARAM_STR);
-        $q->bindValue(':email', $email->email(), PDO::PARAM_STR);
+        $q->bindValue(':email', $user->email(), PDO::PARAM_STR);
+        $q->bindValue(':pwd', $user->pwd(), PDO::PARAM_STR);
         $q->bindValue(':lieu', $user->lieu(), PDO::PARAM_STR );
         $q->bindValue(':niveau', $user->niveau(), PDO::PARAM_INT);
         $q->bindValue(':userModif', $user->userModif(),PDO::PARAM_STR);
