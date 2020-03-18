@@ -16,7 +16,8 @@ class User
 
     const NOM_INVALIDE = 1;
     const PRENOM_INVALIDE = 2;
-    const EMAIL_INVALIDE = 3;       
+    const EMAIL_INVALIDE = 3; 
+    const LIEU_INVALIDE = 4;      
     
     public function __construct($valeurs=[])
     {
@@ -95,15 +96,8 @@ class User
        }
     }
     public function setPwd($pwd)
-    {
-        if(!is_string($pwd) || empty($pdw)) 
-       {
-           $this->erreurs[] = self::EMAIL_INVALIDE;
-       }
-       else
-       {
-           $this->pwd = $pwd;
-       }    
+    {              
+           $this->pwd = $pwd;          
     }
     public function setNiveau($niveau)
     {
