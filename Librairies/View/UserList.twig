@@ -1,0 +1,32 @@
+{% include 'head.twig' with {'title': 'liste utilisateur'} %}
+
+<body>
+    <table>
+        <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>email</th>
+            <th>lieu</th>
+            <th>niveau</th>
+            <th>Ajouter par:</th>
+            <th>Action</th>
+        </tr>
+
+{% for user in userList  %}
+        <tr>
+            <td> {{ user.nom }} </td>
+            <td> {{ user.prenom }} </td>
+            <td> {{ user.email }} </td>
+            <td> {{ user.lieu }} </td>
+            <td> {{ user.niveau }} </td>
+            <td> {{user.userAdd }} </td>
+            <td>
+                <button><a href='index.php?modifier={{ user.id}} '>Modifier</a></button> |
+                <button><a href="delete={{ user.id }}">Supprimer</a></button>
+            </td>
+            </tr>
+{% endfor %}
+
+    </table>
+</body>
+</html>
