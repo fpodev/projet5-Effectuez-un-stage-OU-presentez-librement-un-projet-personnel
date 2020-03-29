@@ -1,11 +1,30 @@
-{% include 'head.twig' with {'title': 'Utilisateur'} %}
+{% extends "head.twig" %}
 
-<body id="CreatePage">        
- <p>Ajouter un utilisateur</p>
-    <div class='Create'>
-       
-      <form action="index.php" method="post">
+{% block title %}
+    {% if user is defined %}
+        Modifier utilisateur
+    {% else %}
+        Ajouter Utilisateur
+    {% endif %}
+{% endblock %}
+
+ {% block content %} 
+ 
+<div class="container">         
+ <p>
+    <button><a href="Accueil">Acceuil</a></button> </br>
+    {% if user is defined %}
+        Modifier utilisateur
+    {% else %}
+        Ajouter Utilisateur
+    {% endif %}
+ </p>    
+    <div class='Create'>       
+      <form action="liste" method="post">
             <p>
+                {% if erreurs is defined %}
+                    echo {{ erreurs }}
+                {% endif %}
                 <label for="nom">Nom:</label></br>
                 <input type="text" name="nom" value="{{ user.nom }}"/></br>
 
@@ -19,21 +38,22 @@
                 <input type="text" name="lieu" value="{{ user.lieu }}"/></br>
 
                 <label for="niveau">Niveau:</label></br>
-                <input type="radio" name="niveau" value="admin"/>admin
-                <input type="radio" name="niveau" value="1"/>1
-                <input type="radio" name="niveau" value="2"/>2
-                <input type="radio" name="niveau" value="3"/>3
-                <input type="radio" name="niveau" value="4"/>4</br>                               
+                
+                <input type="radio" name="niveau" value="admin" {% if user.niveau == "admin" %} checked{% endif %}/>admin
+                <input type="radio" name="niveau" value="1" {% if user.niveau == 1 %} checked{% endif %}/>1
+                <input type="radio" name="niveau" value="2" {% if user.niveau == 2 %} checked{% endif %}/>2
+                <input type="radio" name="niveau" value="3" {% if user.niveau == 3 %} checked{% endif %}/>3
+                <input type="radio" name="niveau" value="4" {% if user.niveau == 4 %} checked{% endif %}/>4</br>                               
             
                 {% if user is defined %}
-            <input type="hidden" name="id" value="{{ user.id }}" />
-            <input type="submit" value="Valider modification" name="valider" />                            
-                {% endif %}
-           
-            <input type="submit" name="valider" value="Valider" />
-                
+                    <input type="hidden" name="id" value="{{ user.id }}" />
+                    <input type="submit" value="Valider modification" name="valider" />   
+                {% else %}  
+                    <input type="submit" name="valider" value="Valider" />                                     
+                {% endif %}        
+            
             </p>
-        </form> 
-    </div>          
-</body>
-</html> 
+        </form>      
+    </div> 
+</div> 
+ {% endblock %}             
