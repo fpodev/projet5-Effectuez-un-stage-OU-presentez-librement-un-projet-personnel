@@ -86,7 +86,7 @@ class UserModel
     }  
     public function connexion($identifiant)
     {
-        $q = $this->db->prepare('SELECT pwd FROM User WHERE email = :identifiant');        
+        $q = $this->db->prepare('SELECT * FROM User WHERE email = :identifiant');        
        
         $q->bindValue(':identifiant', $identifiant);                
 
