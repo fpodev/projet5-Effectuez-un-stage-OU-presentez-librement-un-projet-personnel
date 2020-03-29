@@ -1,10 +1,12 @@
 
-{% include 'head.twig' with {'title': 'connexion'} %}
+{% extends "head.twig" %}
 
-<body id="loginPage">        
+{% block title %} Connexion {% endblock %}
+
+{% block content %}    
  <p>page de connexion</p> 
     <div class='login'>
-        <form action="index.php?login" method="post">
+        <form action="Accueil" method="post">
             <p>
             <label for="identifiant">Identifiant:</label></br>
             <input type="text" name='identifiant'/></br>
@@ -13,6 +15,5 @@
             <input type="submit" name="connexion" value="connexion" />
             </p>
         </form>
-    </div>             
-</body>
-</html> 
+    </div>  
+{% endblock %}           
