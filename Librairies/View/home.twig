@@ -1,0 +1,26 @@
+{% extends "head.twig" %}
+
+{% block title %} Accueil {% endblock %}
+
+{% block content %} 
+    <div>
+    <i class="fas fa-user">Bienvenue </i>
+    <div>
+    <div>
+    {% if niveau  == 'admin' %}
+        <img src= "Public/img/Batiment.png">
+        <img src= "Public/img/Infotravaux.jpg">
+        <img src= "Public/img/travaux.png">
+        <a href="/UserControler"><img src= "Public/img/Utilisateurs.jpg" alt="gestion utilisateur"></a>
+        <img src= "Public/img/Lieu.png">
+    {% elseif niveau == '1' %}
+        <img src= "Public/img/Batiment.png">
+        <img src= "Public/img/Infotravaux.jpg">
+        <img src= "Public/img/travaux.png">
+        <a href="Liste-Utilisateurs"><img src= "Public/img/Utilisateurs.jpg" alt="gestion utilisateur"></a>
+    {% else %}
+        <img src= "Public/img/Infotravaux.jpg">
+        <img src= "Public/img/travaux.png">
+    {% endif %}
+    </div>
+{% endblock %}
