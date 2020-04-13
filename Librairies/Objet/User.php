@@ -1,10 +1,10 @@
 <?php
 namespace App\Objet;
 
-class User
-{
-    private $erreurs = [];
-    private $id;
+use App\Objet\AbstractClass;
+
+class User extends AbstractObjet
+{    
     private $nom;
     private $prenom;
     private $email;
@@ -17,43 +17,17 @@ class User
     const NOM_INVALIDE = 1;
     const PRENOM_INVALIDE = 2;
     const EMAIL_INVALIDE = 3; 
-    const LIEU_INVALIDE = 4;      
-    
-    public function __construct($valeurs=[])
-    {
-        if (!empty($valeurs))
-        {        
-            $this->hydrate($valeurs);
-        }
-    }    
-    public function hydrate($donnees)
-    {
-        foreach ($donnees as $attribut => $valeur)
-        {
-            $methode = 'set'.ucfirst($attribut);
-
-            if (is_callable([$this, $methode]))
-            {
-                $this->$methode($valeur);
-            }
-        }
-    }  
-    public function isNew()
-    {
-        return empty($this->id);
-    }
+    const LIEU_INVALIDE = 4; 
+    const NIVEAU_INVALIDE = 5;        
+ 
     public function isValid()
     {
-        return !(empty($this->nom) || empty($this->prenom) || empty($this->email));
+        return !(empty($this->nom) || empty($this->prenom) || empty($this->email || empty($this->niveau)));
     }
-    //setter
-    public function setId($id)
-    {
-        $this->id = (int) $id;
-    }
+    //setter    
     public function setLieu($lieu)
     {
-        if(!is_string($lieu) || empty($lieu))
+        if($lieu === 'Choisir une ville')
         {
             $this->erreurs[] = self::LIEU_INVALIDE;
         }
@@ -101,7 +75,7 @@ class User
     }
     public function setNiveau($niveau)
     {
-        if(!is_string($niveau) || empty($niveau)) 
+        if(empty($niveau)) 
         {
             $this->erreurs[] = self::NIVEAU_INVALIDE;
         }
@@ -119,14 +93,7 @@ class User
         $this->userModif = $userModif;
     }    
     //getter
-    public function erreurs()
-    {
-        return $this->erreurs;
-    }
-    public function id()
-    {
-        return $this->id;
-    }
+    
     public function lieu()
     {
         return $this->lieu;
