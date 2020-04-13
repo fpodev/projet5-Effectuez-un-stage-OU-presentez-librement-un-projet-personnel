@@ -1,0 +1,29 @@
+{#
+Author: fpodev (fpodev@gmx.fr)
+ChangePass.twig (c) 2020
+Desc: description
+Created:  2020-04-13T09:14:09.993Z
+Modified: !date!
+#}
+{% extends "head.twig" %}
+
+{% block title %} Changement mot de passe {% endblock %}
+
+{% block content %}  
+ <div class=container> 
+    <p>Modification mot de passe</p>  
+        <div class='login'>
+            <form action="Accueil" method="post">
+                <p>
+                <label for="pass">Votre mot de passe actuel:</label></br>
+                <input type="password" name='pass'/></br>
+                <label for="newPass">Nouveau mot de passe:</label></br>
+                <input type="password" name='newPass'/></br>
+                <label for="confirmPass">Confirmer votre nouveau mot de passe:</label></br>
+                <input type="password" name="confirmPass" /></br>
+                <input type="submit" name="valider" value="Valider" />
+                </p>
+            </form>
+        </div>  
+</div>
+{% endblock %}           
