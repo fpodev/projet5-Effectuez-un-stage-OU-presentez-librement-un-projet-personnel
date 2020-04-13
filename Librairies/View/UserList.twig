@@ -5,6 +5,7 @@
 
 {% block content %}  
     <button><a href=http://localhost/OpenClassRooms/projet5/Accueil>Accueil</a></button>
+<div class="container">    
     <table>
         <tr>
             <th>Nom</th>
@@ -14,8 +15,7 @@
             <th>niveau</th>
             <th>Ajouter par:</th>
             <th>Action</th>
-        </tr>
-
+        </tr>    
 {% for user in userList  %}
         <tr>
             <td> {{ user.nom }} </td>
@@ -25,12 +25,12 @@
             <td> {{ user.niveau }} </td>
             <td> {{ user.userAdd }} </td>
             <td>
-              <a href='modifier={{ user.id}} '><i class="fas fa-user-edit"></a></i> | 
-              <a href="supprimer={{ user.id }}"><i class="fas fa-user-slash"></a></i>
+              <a href='modifier={{ user.id}} '><i class="fas fa-user-edit fa-2x"></a></i> | 
+              <a href="supprimer={{ user.id }}"><i class="fas fa-user-slash fa-2x"></a></i>
             </td>
         </tr>
 {% endfor %}
-
     </table>
-   <a href='Ajouter-Utilisateur'><i class="fas fa-user-plus"></i></a>
+   <a href='Ajouter-Utilisateur'><i class="fas fa-user-plus fa-2x"></i></a>
+</div>
 {% endblock %}    
