@@ -21,8 +21,9 @@ class Routeur{
         $this->ctrlUser = new UserController();
         $this->loader = new \Twig\Loader\FilesystemLoader(['Librairies/View', 'Librairies/Templates']);
         $this->twig = new \Twig\Environment($this->loader, ['debug' => true,]); 
-        $this->twig->addExtension(new \Twig\Extension\DebugExtension());  
-
+        $this->twig->addExtension(new \Twig\Extension\DebugExtension());
+        session_start(); 
+        
         $this->url = $url;
       }
       
@@ -69,39 +70,4 @@ class Routeur{
 }
 
       
-       /*if(isset($_GET['connexion']))
-            { 
-              //si une session existe ce connect directement
-              
-              {
-                $this->ctrlUser->listUser();                             
-              }
-              //si session non existante, detruit la session dans le cache et renvoie sur la page pour se connecter
-              else{ 
-                session_destroy();                 
-               include ('Librairies/View/userList.php');               
-              }
-            } 
-        
-        elseif(isset($_POST['connexion']))       
-        {            
-            $this->ctrlUser->connexion();              
-        }    
-        elseif(isset($_POST['valider']))
-        {           
-            $this->ctrlUser->addUser();
-        }
-        elseif(isset($_GET['modifier']))
-        {
-            $this->ctrlUser->changeUser();
-        }
-        elseif(isset($_GET['deleteUser']))
-        {
-            $this->ctrlUser->deleteUser();
-        }
-        else
-        {
-          $this->ctrlUser->home();      
-        }*/
-      
-    
+       
