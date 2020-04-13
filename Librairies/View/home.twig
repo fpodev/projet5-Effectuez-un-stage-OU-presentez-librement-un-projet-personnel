@@ -1,26 +1,93 @@
+
 {% extends "head.twig" %}
 
 {% block title %} Accueil {% endblock %}
 
 {% block content %} 
-    <div>
-    <i class="fas fa-user">Bienvenue </i>
-    <div>
-    <div>
-    {% if niveau  == 'admin' %}
-        <img src= "Public/img/Batiment.png">
-        <img src= "Public/img/Infotravaux.jpg">
-        <img src= "Public/img/travaux.png">
-        <a href="/UserControler"><img src= "Public/img/Utilisateurs.jpg" alt="gestion utilisateur"></a>
-        <img src= "Public/img/Lieu.png">
-    {% elseif niveau == '1' %}
-        <img src= "Public/img/Batiment.png">
-        <img src= "Public/img/Infotravaux.jpg">
-        <img src= "Public/img/travaux.png">
-        <a href="Liste-Utilisateurs"><img src= "Public/img/Utilisateurs.jpg" alt="gestion utilisateur"></a>
-    {% else %}
-        <img src= "Public/img/Infotravaux.jpg">
-        <img src= "Public/img/travaux.png">
-    {% endif %}
+<div class="container-fluid">
+    <div class="row">
+        <i class="fas fa-user col-md-6"> Bienvenue {{ session.prenom|title }} </i>
+        <i class="far fa-map col-md-6"> Vous dépendez du site de {{ session.lieu|title }} </i>             
     </div>
+</div>  
+
+<div class="container">
+  {% if session.niveau  == '0' %}  
+    <div class="row">
+        <div class="col-md-4">  
+            <img src= "Public/img/1Batiment.png">
+            <div class="caption">
+                <p> Gerer les bâtiments </p>
+            </div>
+        </div>
+        <div class="col-md-4">  
+            <img src= "Public/img/Infotravaux.jpg">
+            <div class="caption">
+                <p>Les infos travaux</p>
+            </div>
+        </div>
+        <div class="col-md-4">  
+            <img src= "Public/img/Travaux.jpg">
+            <div class="caption">
+                <p>Faire une demande travaux</p>
+            </div>
+        </div>
+        <div class="col-md-4">  
+            <a href="Gestion-Utilisateurs"><img src= "Public/img/Utilisateurs.jpg" alt="gestion des utilisateurs"></a>
+            <div class="caption">
+               <p>Gerer les utilisateurs</p>
+            </div>
+        </div>
+        <div class="col-md-4">         
+            <a href="Gestion-Lieux"><img src= "Public/img/Lieu.png" alt="gestion des lieux"></a>
+            <div class="caption">
+                <p>Gerer les lieux</p>
+            </div>
+        </div>
+    </div>   
+   
+    {% elseif session.niveau == '1' %}
+    <div class="row">
+        <div class="col-md-6">  
+            <img src= "Public/img/1Batiment.png">
+            <div class="caption">
+                <p> Gerer les bâtiments </p>
+            </div>
+        </div>
+        <div class="col-md-6">  
+            <img src= "Public/img/Infotravaux.jpg">
+            <div class="caption">
+                <p>Les infos travaux</p>
+            </div>
+        </div>
+        <div class="col-md-6">  
+            <img src= "Public/img/Travaux.jpg">
+            <div class="caption">
+                <p>Faire une demande travaux</p>
+            </div>
+        </div>
+        <div class="col-md-6">  
+            <a href="Liste-Utilisateurs"><img src= "Public/img/Utilisateurs.jpg" alt="gestion utilisateur"></a>
+            <div class="caption">
+                <p>Gerer les utilisateurs</p>
+            </div>
+        </div>   
+    </div>          
+    {% else %}
+    <div class="row">      
+        <div class="col-md-6">  
+            <img src= "Public/img/Infotravaux.jpg">
+            <div class="caption">
+                <p>Les infos travaux</p>
+            </div>
+        </div>
+        <div class="col-md-6">  
+            <img src= "Public/img/Travaux.jpg">
+            <div class="caption">
+                <p>Faire une demande travaux</p>
+            </div>
+        </div>       
+    </div>          
+{% endif %} 
+</div>     
 {% endblock %}
