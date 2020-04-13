@@ -1,3 +1,4 @@
+
 {% extends "head.twig" %}
 
 {% block title %}
@@ -9,41 +10,54 @@
 {% endblock %}
 
  {% block content %} 
- 
 <div class="container">         
  <p>
     <button><a href="Accueil">Acceuil</a></button> </br>
     {% if user is defined %}
-        Modifier utilisateur
+       <p>Modifier utilisateur</p>
     {% else %}
-        Ajouter Utilisateur
+       <p>Ajouter Utilisateur</p>
     {% endif %}
  </p>    
-    <div class='Create'>       
-      <form action="liste" method="post">
-            <p>
-                {% if erreurs is defined %}
-                    echo {{ erreurs }}
+    <div class='Create'>         
+      <form action="Liste-Utilisateurs" method="post">      
+            <p>                            
+                {% if 1 in user %}
+                    <p>le nom est invalide!</p>
                 {% endif %}
-                <label for="nom">Nom:</label></br>
-                <input type="text" name="nom" value="{{ user.nom }}"/></br>
+                    <label for="nom">Nom:</label></br>
+                    <input type="text" name="nom" value="{{ user.nom }}"/></br>
 
-                <label for="prenom">Prenom:</label></br>
-                <input type="text" name="prenom" value="{{ user.prenom }}"/></br>
+                {% if 2 in user %}
+                    <p>le prenom est invalide!</p>
+                {% endif %}
+                    <label for="prenom">Prenom:</label></br>
+                    <input type="text" name="prenom" value="{{ user.prenom }}"/></br>
 
-                <label for="email">Email:</label></br>
-                <input type="email" name="email" value="{{ user.email }}"/></br>
+                {% if 3 in user %}
+                    <p>l'email est invalide!</p>
+                {% endif %}
+                    <label for="email">Email:</label></br>
+                    <input type="email" name="email" value="{{ user.email }}"/></br>
 
-                <label for="lieu">Lieu:</label></br>
-                <input type="text" name="lieu" value="{{ user.lieu }}"/></br>
+                {% if 4 in user %}
+                    <p>le lieu est invalide!</p>
+                {% endif %}
+                    <label for="lieu">Lieu:</label></br>
+                    <select name="lieu">
+                        <option value="">sete</option> 
 
-                <label for="niveau">Niveau:</label></br>
-                
-                <input type="radio" name="niveau" value="admin" {% if user.niveau == "admin" %} checked{% endif %}/>admin
-                <input type="radio" name="niveau" value="1" {% if user.niveau == 1 %} checked{% endif %}/>1
-                <input type="radio" name="niveau" value="2" {% if user.niveau == 2 %} checked{% endif %}/>2
-                <input type="radio" name="niveau" value="3" {% if user.niveau == 3 %} checked{% endif %}/>3
-                <input type="radio" name="niveau" value="4" {% if user.niveau == 4 %} checked{% endif %}/>4</br>                               
+                    </select></br>  
+
+                {% if 5 in user %}
+                    <p>le niveau est invalide!</p>
+                {% endif %}
+                    <label for="niveau">Niveau:</label></br>                
+                    <input type="radio" name="niveau" value="admin" {% if user.niveau == "admin" %} checked{% endif %}/>admin
+                    <input type="radio" name="niveau" value="1" {% if user.niveau == 1 %} checked{% endif %}/>1
+                    <input type="radio" name="niveau" value="2" {% if user.niveau == 2 %} checked{% endif %}/>2
+                    <input type="radio" name="niveau" value="3" {% if user.niveau == 3 %} checked{% endif %}/>3
+                    <input type="radio" name="niveau" value="4" {% if user.niveau == 4 %} checked{% endif %}/>4</br>                               
             
                 {% if user is defined %}
                     <input type="hidden" name="id" value="{{ user.id }}" />
@@ -56,4 +70,4 @@
         </form>      
     </div> 
 </div> 
- {% endblock %}             
+{% endblock %}        
