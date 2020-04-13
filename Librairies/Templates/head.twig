@@ -1,4 +1,10 @@
-
+{#
+Author: fpodev (fpodev@gmx.fr)
+head.twig (c) 2020
+Desc: description
+Created:  2020-04-13T09:40:32.024Z
+Modified: !date!
+#}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -12,8 +18,9 @@
         <title>{% block title %}  {% endblock %}</title>
     {% endblock %}
 </head>
-<body>
+<body>    
     <div id="content"> {% block content %} {% endblock %} </div>
+  
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </body>
 </html>
