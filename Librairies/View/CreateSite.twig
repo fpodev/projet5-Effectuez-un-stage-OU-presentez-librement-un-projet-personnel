@@ -1,0 +1,56 @@
+{% extends "head.twig" %}
+
+{% block title %}
+    {% if user is defined %}
+        Modifier Lieu
+    {% else %}
+        Ajouter Lieu
+    {% endif %}
+{% endblock %}
+
+ {% block content %} 
+<div class="container">         
+ <p>
+    <button><a href="Accueil">Acceuil</a></button> </br>
+    {% if user is defined %}
+       <p>Modifier utilisateur</p>
+    {% else %}
+       <p>Ajouter Utilisateur</p>
+    {% endif %}
+ </p>    
+    <div class='Create'>         
+      <form action="Liste-Utilisateurs" method="post">      
+            <p>                
+                {% if site.erreurs == 1  %}
+                    <p>la ville est invalide!</p>
+                {% endif %}
+                    <label for="ville">Ville:</label></br>
+                    <input type="text" name="Ville" value="{{ site.ville }}"/></br>
+                {% if site.erreurs == 2  %}
+                    <p>le bâtiment est invalide!</p>
+                {% endif %}
+                    <label for="batiment">Bâtiment:</label></br>
+                    <input type="text" name="batiment" value="{{ site.batiment}}"/></br>
+                {% if site.erreurs == 3  %}
+                    <p>le secteur est invalide!</p>
+                {% endif %}
+                    <label for="zone">Zone:</label></br>
+                    <input type="text" name="zone" value="{{ site.secteur }}"/></br>
+                {% if user.erreurs == 4  %}
+                    <p>le materiel invalide!</p>
+                {% endif %}
+                    <label for="materiel">Matériel:</label></br>
+                    <inuput type="text" name="materiel" value="{{ site.materiel }}"/></br>                           
+            
+                {% if site is defined %}
+                    <input type="hidden" name="id" value="{{ site.id }}" />
+                    <input type="submit" value="Valider modification" name="valider" />   
+                {% else %}  
+                    <input type="submit" name="valider" value="Valider" />                                     
+                {% endif %}        
+            
+            </p>
+        </form>      
+    </div> 
+</div> 
+{% endblock %}        
