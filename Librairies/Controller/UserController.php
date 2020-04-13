@@ -1,9 +1,11 @@
 <?php
 namespace App\Controller;
 
+
 use App\Objet\User;
+use App\View\Render;
+use App\Mail\SendMail;
 use App\model\UserModel;
-use App\model\ViewModel;
 use App\Objet\ConnexionDb;
 
 class UserController{
@@ -12,10 +14,9 @@ class UserController{
     
     public function __construct(){
         $db = ConnexionDb::getPDO();
-        $this->user = new UserModel($db);        
-        
-        $this->loader = new \Twig\Loader\FilesystemLoader(['Librairies/View', 'Librairies/Templates']);
-        $this->twig = new \Twig\Environment($this->loader); 
+        $this->user = new UserModel($db);  
+        $this->send = new SendMail();   
+        $this->render = new Render();    
     }
 
     public function addUser(){       
@@ -41,51 +42,71 @@ class UserController{
             if($user->isValid())
             {
                 $this->user->save($user);
+
+                $prenom = $_POST['prenom'];
+                $destinataire = $_POST['email'];
+                $sujet = 'Création compte GMAO';
+                ob_start();
+                include ('Librairies/Mail/userView.php');
+                $message = ob_get_clean();             
+         
+                $this->send->mail($destinataire, $sujet, $message);
+                
+                $this->listUser(); 
             }
             else
             {
-                    $erreurs = $user->erreurs();                                                        
+                    $erreurs = $user->erreurs();                     
+                
+                    $this->render->view('CreateUser', ['user' => $erreurs]);                                                      
             } 
-            $this->listUser(); 
+          
     }    
     public function listUser(){
-        $userList = $this->user->listUser();
-
-        echo $this->twig->render('UserList.twig', array('userList' => $userList));
+            $userList = $this->user->listUser();                             
+    
+            $this->render->view('UserList', ['userList' => $userList]); 
     }
     
     public function changeUser($id){                
             if(preg_match("#[0-9]#" , $id))
             {
-                   $user = $this->user->uniqueUser($id);
-                   echo $this->twig->render('CreateUser.twig', array('user' => $user));                  
-            }            
+                $user = $this->user->uniqueUser($id);
+                $this->render->view('CreateUser', ['user' => $user]); 
+                            
+            } 
+            else{
+                echo 'erreur 404';
+            }           
     }
     public function userPage(){
-        echo $this->twig->render('CreateUser.twig');
+            
+            $this->render->view('CreateUser');          
     }
     public function deleteUser($id){
+        
             $this->user->delete($id);
             $this->listUser();
     }
     public function connexion(){ 
                       
-        $resultat = $this->user->connexion(($_POST['identifiant']));
-                                              
-        $okPass = password_verify($_POST['pass'], $resultat['pwd']);        
+            $resultat = $this->user->connexion(($_POST['identifiant']));
+                                                
+            $okPass = password_verify($_POST['pass'], $resultat['pwd']);        
             if(!$resultat || !$okPass)       
             {
                 echo 'Mauvais identifiant ou mot de passe';
-                echo $this->twig->render('Login.twig'); 
+                $this->render->view('Login.twig'); 
             }
             else
-            {                                                                                                      
+            {   
                 $_SESSION['identifiant'] = $_POST['identifiant'];                
-                $_SESSION['user'] = $_COOKIE;
+                $_SESSION['cookie'] = $_COOKIE;                          
+                $_SESSION['prenom'] = $resultat['prenom'];
+                $_SESSION['lieu'] = $resultat['lieu'];
                 $_SESSION['niveau'] = $resultat['niveau'];
-                $_SESSION['identitie'] = $resultat['prenom'];
-               
-                echo $this->twig->render('home.twig', ['niveau' => $_SESSION['niveau']]);                                                                                                                                                                                                                       
+
+                $this->render->view('home'); 
             }
         }                                           
     public function ChangePass(){                                        
@@ -99,7 +120,7 @@ class UserController{
                 {               
                     $this->user->nouveauPass($_SESSION['identifiant']);
                     
-                    session_destroy();    
+                       
                     include('Librairies/View/LoginView.php'); 
                 }
                 else
@@ -108,12 +129,9 @@ class UserController{
                     include('Librairies/View/changePassView.php');
                 }    
     }  
-    public function home(){ 
-        if(!empty($_SESSION['user']) && $_SESSION['user'] === $_COOKIE){
-            echo $this->twig->render('home.twig');
-        }
-        else{                                   
-        echo $this->twig->render('Login.twig');        
-        }
-    }  
+    public function home(){     
+                  
+            $this->render->view('home');   
+                
+        }       
 }
