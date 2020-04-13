@@ -252,7 +252,7 @@ final class CoreExtension extends AbstractExtension
             new TwigTest('iterable', 'twig_test_iterable'),
         ];
     }
-
+   
     public function getNodeVisitors(): array
     {
         return [new MacroAutoImportNodeVisitor()];
