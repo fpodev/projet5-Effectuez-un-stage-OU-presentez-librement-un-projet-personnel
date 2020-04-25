@@ -1,33 +1,33 @@
 <?php
 namespace App\Objet;
 
-use App\Objet\AbstractClass;
 
-class User extends AbstractObjet
+use App\Objet\ExtendsObjet;
+
+class User extends ExtendsObjet
 {    
-    private $nom;
-    private $prenom;
-    private $email;
-    private $pwd;
-    private $lieu;
-    private $niveau;
-    private $userAdd;
-    private $userModif;
-
-    const NOM_INVALIDE = 1;
-    const PRENOM_INVALIDE = 2;
-    const EMAIL_INVALIDE = 3; 
-    const LIEU_INVALIDE = 4; 
-    const NIVEAU_INVALIDE = 5;        
- 
+    
+    private $prenom,
+            $email,
+            $pwd,
+            $lieu,
+            $niveau,
+            $userAdd,
+            $userModif;
+   
+    const PRENOM_INVALIDE = 2,
+          EMAIL_INVALIDE = 3, 
+          LIEU_INVALIDE = 4, 
+          NIVEAU_INVALIDE = 5;        
+        
     public function isValid()
     {
-        return !(empty($this->nom) || empty($this->prenom) || empty($this->email || empty($this->niveau)));
+        return !(empty($this->nom) || empty($this->prenom) || empty($this->email || empty($this->niveau) || empty($this->lieu)));
     }
     //setter    
     public function setLieu($lieu)
     {
-        if($lieu === 'Choisir une ville')
+        if(empty($lieu))
         {
             $this->erreurs[] = self::LIEU_INVALIDE;
         }
@@ -35,18 +35,7 @@ class User extends AbstractObjet
         {
             $this->lieu = $lieu;
         }
-    }
-    public function setNom($nom)
-    {
-        if(!is_string($nom) || empty($nom))
-        {
-            $this->erreurs[] = self::NOM_INVALIDE;
-        }
-        else
-        {
-            $this->nom = $nom;
-        }
-    }
+    }      
     public function setPrenom($prenom)
     {
         if(!is_string($prenom) || empty($prenom))
@@ -97,11 +86,7 @@ class User extends AbstractObjet
     public function lieu()
     {
         return $this->lieu;
-    }
-    public function nom()
-    {
-        return $this->nom;
-    }
+    }    
     public function prenom()
     {
         return $this->prenom;

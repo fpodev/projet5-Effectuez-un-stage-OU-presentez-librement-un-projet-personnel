@@ -1,19 +1,16 @@
 <?php
 namespace App\Objet;
 
-use App\Objet\AbstractClass;
+use App\Objet\ExtendsObjet;
 
-class Secteur extends AbstractObjet
-{    
-    private $secteur;  
+class Secteur extends ExtendsObjet
+{         
     private $id_batiment; 
-    private $id_lieu;  
-
-    const SECTEUR_INVALIDE = 1;
+    private $id_lieu;     
  
     public function isValid()
     {
-        return !(empty($this->secteur));
+        return !(empty($this->name) || empty($this->id_lieu) || empty($this->id_batiment));
     }
     //setter 
     public function setId_Batiment($id_batiment)
@@ -23,17 +20,6 @@ class Secteur extends AbstractObjet
     public function setId_lieu($id_lieu)
     {
         $this->id_lieu = (int) $id_lieu;  
-    }
-    public function setSecteur($secteur)
-    {
-        if(!is_string($secteur) || empty($secteur))
-        {
-            $this->erreurs[] = self::SECTEUR_INVALIDE;
-        }
-        else
-        {
-            $this->secteur = $secteur;
-        }
     }    
     //getter 
     public function id_batiment()
@@ -43,11 +29,6 @@ class Secteur extends AbstractObjet
     public function id_lieu()
     {
         return $this->id_lieu;
-    }
-
-    public function secteur()
-    {
-        return $this->secteur;
-    }  
+    }    
 }
 

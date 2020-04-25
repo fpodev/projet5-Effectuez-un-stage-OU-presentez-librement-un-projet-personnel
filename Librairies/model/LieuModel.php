@@ -11,8 +11,6 @@ namespace App\model;
 use PDO;
 use App\Objet\Lieu;
 use RuntimeException;
-use App\model\UserModel;
-
 class LieuModel{
 
     private $db;
@@ -20,13 +18,12 @@ class LieuModel{
     public function __construct(PDO $db)
     {
        $this->db = $db;
-    }
-    
+    }    
     public function add(Lieu $lieu)
     {
         $q = $this->db->prepare('INSERT INTO Lieu (ville) VALUES (:ville)');
     
-        $q->bindValue(':ville', $lieu->ville(), PDO::PARAM_STR);         
+        $q->bindValue(':ville', $lieu->nom(), PDO::PARAM_STR);         
 
         $q->execute();
     }
@@ -36,7 +33,7 @@ class LieuModel{
     }
     public function lieuList()
     {
-        $sql = 'SELECT ville FROM Lieu';
+        $sql = 'SELECT * FROM Lieu';
 
         $q = $this->db->query($sql);
 
@@ -61,14 +58,14 @@ class LieuModel{
         $lieu = $q->fetch();  
 
         $q->closeCursor();
-                
-        return $lieu;
+       
+        return $lieu; 
     }
     protected function update(Lieu $lieu)
     {
-        $q = $this->db->prepare('UPDATE Lieu SET ville = :ville  WHERE id = :id');
+        $q = $this->db->prepare('UPDATE Lieu SET nom = :nom  WHERE id = :id');
 
-        $q->bindValue(':ville', $lieu->ville(), PDO::PARAM_STR);          
+        $q->bindValue(':nom', $lieu->nom(), PDO::PARAM_STR);          
         $q->bindValue(':id', $lieu->id(), PDO::PARAM_INT);
 
         $q->execute();

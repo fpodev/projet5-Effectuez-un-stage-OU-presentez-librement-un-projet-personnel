@@ -1,20 +1,16 @@
 <?php
 namespace App\Objet;
 
-use App\Objet\AbstractClass;
-
-class Materiel extends AbstractObjet
-{    
-    private $materiel;  
+use App\Objet\ExtendsObjet;
+class Materiel extends ExtendsObjet
+{         
     private $id_secteur; 
     private $id_batiment;
-    private $id_lieu;
-
-    const MATERIEL_INVALIDE = 1;
+    private $id_lieu;    
  
     public function isValid()
     {
-        return !(empty($this->materiel) || empty($this->id_zone));
+        return !(empty($this->name) || empty($this->id_secteur) || empty($this->id_batiment) || empty($this->id_lieu));
     }
     //setter 
     public function setId_lieu($id_lieu)
@@ -28,18 +24,7 @@ class Materiel extends AbstractObjet
     public function setId_secteur($id_secteur)
     {
         $this->id_secteur = (int)$id_secteur;                 
-    }
-    public function setMateriel($materiel)
-    {
-        if(!is_string($materiel) || empty($materiel))
-        {
-            $this->erreurs[] = self::MATERIEL_INVALIDE;
-        }
-        else
-        {
-            $this->materiel = $materiel;
-        }
-    }    
+    }  
     //getter 
     public function id_lieu()
     {
@@ -52,10 +37,6 @@ class Materiel extends AbstractObjet
     public function id_secteur()
     {
         return $this->id_secteur;
-    }  
-    public function materiel()
-    {
-        return $this->materiel;
-    }  
+    }      
 }
 

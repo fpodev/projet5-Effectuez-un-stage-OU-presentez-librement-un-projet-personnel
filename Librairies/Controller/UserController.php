@@ -5,18 +5,24 @@ namespace App\Controller;
 use App\Objet\User;
 use App\View\Render;
 use App\Mail\SendMail;
+use App\model\LieuModel;
 use App\model\UserModel;
 use App\Objet\ConnexionDb;
+use App\model\TravauxModel;
 
 class UserController{
 
-        private $user;        
+        private $user;  
+        private $ville;
+        private $travaux;      
     
     public function __construct(){
         $db = ConnexionDb::getPDO();
         $this->user = new UserModel($db);  
         $this->send = new SendMail();   
-        $this->render = new Render();    
+        $this->render = new Render();  
+        $this->ville = new LieuModel($db); 
+        $this->travaux = new TravauxModel($db);
     }
 
     public function addUser(){       
@@ -35,36 +41,36 @@ class UserController{
                 'userModif' => $_SESSION['identifiant']              
             ]
             );
-            if(isset($_POST['id']))
-            {
-                $user->setId($_POST['id']);
-            }
-            if($user->isValid())
-            {
-                $this->user->save($user);
+        if(isset($_POST['id']))
+        {
+            $user->setId($_POST['id']);
+        }
+        if($user->isValid())
+        {
+            $this->user->save($user);
 
-                $prenom = $_POST['prenom'];
-                $destinataire = $_POST['email'];
-                $sujet = 'Création compte GMAO';
-                ob_start();
-                include ('Librairies/Mail/userView.php');
-                $message = ob_get_clean();             
-         
-                $this->send->mail($destinataire, $sujet, $message);
-                
-                $this->listUser(); 
-            }
-            else
-            {
-                    $erreurs = $user->erreurs();                     
-                
-                    $this->render->view('CreateUser', ['user' => $erreurs]);                                                      
-            } 
+            $prenom = $_POST['prenom'];
+            $destinataire = $_POST['email'];
+            $sujet = 'Création compte GMAO';
+            ob_start();
+            include ('Librairies/Mail/userView.php');
+            $message = ob_get_clean();             
+        
+            $this->send->mail($destinataire, $sujet, $message);
+            
+            $this->listUser(); 
+        }
+        else
+        {
+                $erreurs = $user->erreurs();                     
+            
+                $this->render->view('CreateUser', ['user' => $erreurs]);                                                      
+        } 
           
     }    
     public function listUser(){
             $userList = $this->user->listUser();                             
-    
+
             $this->render->view('UserList', ['userList' => $userList]); 
     }
     
@@ -72,6 +78,7 @@ class UserController{
             if(preg_match("#[0-9]#" , $id))
             {
                 $user = $this->user->uniqueUser($id);
+                
                 $this->render->view('CreateUser', ['user' => $user]); 
                             
             } 
@@ -96,17 +103,21 @@ class UserController{
             if(!$resultat || !$okPass)       
             {
                 echo 'Mauvais identifiant ou mot de passe';
-                $this->render->view('Login.twig'); 
+                $this->render->view('Login'); 
             }
             else
             {   
-                $_SESSION['identifiant'] = $_POST['identifiant'];                
-                $_SESSION['cookie'] = $_COOKIE;                          
-                $_SESSION['prenom'] = $resultat['prenom'];
-                $_SESSION['lieu'] = $resultat['lieu'];
-                $_SESSION['niveau'] = $resultat['niveau'];
+                $ville = $this->ville->uniqueLieu($resultat['id_lieu']);               
 
-                $this->render->view('home'); 
+                $_SESSION['identifiant'] = $_POST['identifiant'];             
+                $_SESSION['cookie'] = $_COOKIE;                                      
+                $_SESSION['prenom'] = $resultat['prenom'];
+                $_SESSION['lieuId'] = $resultat['id_lieu'];
+                $_SESSION['lieu'] = $ville->nom();
+                $_SESSION['niveau'] = $resultat['niveau'];
+                $_SESSION['id_user'] = $resultat['id'];                
+
+                $this->render->view('Home'); 
             }
         }                                           
     public function ChangePass(){                                        
@@ -129,9 +140,12 @@ class UserController{
                     include('Librairies/View/changePassView.php');
                 }    
     }  
-    public function home(){     
-                  
-            $this->render->view('home');   
+    public function home(){ 
+          $countAll =  $this->travaux->countAll();
+          $countPlanif = $this->travaux->countPlanif();             
+          $countNew = $countAll - $countPlanif;                
+         
+            $this->render->view('Home', ['countNew'=> $countNew, 'countPlanif' => $countPlanif]);   
                 
         }       
 }

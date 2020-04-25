@@ -6,10 +6,11 @@ Desc: bdd Secteur
 Created:  2020-04-13T14:37:25.152Z
 Modified: !date!
 */
+namespace App\model;
+
 use PDO;
 use App\Objet\Secteur;
 use RuntimeException;
-
 class SecteurModel{
 
     private $db;
@@ -20,22 +21,24 @@ class SecteurModel{
     
     public function add(Secteur $secteur)
     {
-        $q = $this->db->prepare('INSERT INTO Secteur (id_batiment, secteur) VALUES (:id_batiment, :secteur');
+        $q = $this->db->prepare('INSERT INTO Secteur (id_batiment, nom) VALUES (:id_batiment, :nom');
     
         $q->bindValue(':id_batiment', $secteur->id_batiment(), PDO::PARAM_INT);  
-        $q->bindValue(':secteur', $secteur->secteur(), PDO::PARAM_STR);         
+        $q->bindValue(':nom', $secteur->nom(), PDO::PARAM_STR);         
 
         $q->execute();
     }
     public function delete($id)
     {
-        $this->db->exec('DELETE FROM Secteur WHERE id= '.(int)$id);
+        $this->db->exec('DELETE FROM * WHERE id= '.(int)$id);
     }
     public function secteurList($id_batiment)
     {
-        $q = $this->db->prepare = 'SELECT secteur FROM Secteur WHERE id_batiment = :id_batiment';
+        $q = $this->db->prepare('SELECT * FROM Secteur WHERE id_batiment = :id_batiment');
 
         $q->bindValue(':id_batiment', $id_batiment, PDO::PARAM_INT);
+
+        $q->execute();
 
         $q->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'App\Objet\Secteur');
     
@@ -62,9 +65,9 @@ class SecteurModel{
     }
     protected function update(Secteur $secteur)
     {
-        $q = $this->db->prepare('UPDATE Secteur SET secteur = :secteur WHERE id = :id');
+        $q = $this->db->prepare('UPDATE Secteur SET nom = :nom WHERE id = :id');
 
-        $q->bindValue(':secteur', $secteur->secteur(), PDO::PARAM_STR);          
+        $q->bindValue(':nom', $secteur->nom(), PDO::PARAM_STR);          
         $q->bindValue(':id', $secteur->id(), PDO::PARAM_INT);
 
         $q->execute();

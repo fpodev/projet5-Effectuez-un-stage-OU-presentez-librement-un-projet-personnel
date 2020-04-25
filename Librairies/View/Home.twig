@@ -1,5 +1,5 @@
 
-{% extends "head.twig" %}
+{% extends "Head.twig" %}
 
 {% block title %} Accueil {% endblock %}
 
@@ -10,12 +10,11 @@
         <i class="far fa-map col-md-6"> Vous dépendez du site de {{ session.lieu|title }} </i>             
     </div>
 </div>  
-
 <div class="container">
   {% if session.niveau  == '0' %}  
     <div class="row">
         <div class="col-md-4">  
-            <img src= "Public/img/1Batiment.png">
+            <a href="Gestion-Batiments"><img src= "Public/img/1Batiment.png"></a>
             <div class="caption">
                 <p> Gerer les bâtiments </p>
             </div>
@@ -24,12 +23,14 @@
             <img src= "Public/img/Infotravaux.jpg">
             <div class="caption">
                 <p>Les infos travaux</p>
+                <a href="Liste-nouveaux-travaux"><p>Nouvelles demandes<span class="new">{{ countNew }}</span></p></a>
+                <a href="Liste-travavaux-planifiés"><p>Travaux planifiés<span class="enCours">{{ countPlanif }}</span></p></a>
             </div>
         </div>
         <div class="col-md-4">  
-            <img src= "Public/img/Travaux.jpg">
+            <a href="Demande-Travaux"><img src= "Public/img/Travaux.jpg"></a>
             <div class="caption">
-                <p>Faire une demande travaux</p>
+                <p>Faire une demande travaux</p>                
             </div>
         </div>
         <div class="col-md-4">  
@@ -58,6 +59,8 @@
             <img src= "Public/img/Infotravaux.jpg">
             <div class="caption">
                 <p>Les infos travaux</p>
+                <p>Nouvelles demandes<span class="new">{{ countNew }}</span></p>
+                <p>Travaux planifiés<span class="enCours">{{ countPlanif }}</span></p>
             </div>
         </div>
         <div class="col-md-6">  
@@ -79,6 +82,8 @@
             <img src= "Public/img/Infotravaux.jpg">
             <div class="caption">
                 <p>Les infos travaux</p>
+                <p>Nouvelles demandes<span class="new">{{ countNew }}</span></p>
+                <p>Travaux planifiés<span class="enCours">{{ countPlanif }}</span></p>
             </div>
         </div>
         <div class="col-md-6">  

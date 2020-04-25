@@ -8,85 +8,83 @@ Modified: !date!
 */
 namespace App\Objet;
 
-use App\Objet\AbstractClass;
 
-class Travaux extends AbstractObjet
-{    
-    
-    private $id_lieu;
-    private $id_batiment;
-    private $id_zone;    
-    private $id_materiel; 
-    private $id_demandeur; //$user mail
-    private $id_technicien; //$user niveau 3
-    private $description;
-    private $detail;
-    private $urgence; 
-    private $date_demande;
-    private $date_prevu;
-    private $date_debut;
-    private $date_fin;
-    private $externe;
+use App\Objet\ExtendsObjet;
 
-    const DESCRIPTION_INVALIDE = 1;
-    const DETAIL_INVALIDE = 2;
-    const URGENCE_INVALIDE = 3;
-    const DATE_PREVU_INVALIDE = 4;
-    const DATE_DEBUT_INVALIDE = 5;
-    const DATE_FIN_INVALIDE = 6;
-    const EXTERNE_INVALIDE = 7;   
+class Travaux extends ExtendsObjet
+{        
+    private $id_lieu,
+            $id_batiment,
+            $id_secteur,    
+            $id_materiel,
+            $id_demandeur, //$user mail
+            $id_technicien, //$user niveau 3
+            $descriptions,
+            $detail,
+            $urgence, 
+            $date_demande,
+            $date_prevu,
+            $date_debut,
+            $date_fin,
+            $externe;
+
+    const DESCRIPTION_INVALIDE = 2,
+          DETAIL_INVALIDE = 3,
+          URGENCE_INVALIDE = 4;          
  
     public function isValid()
-    {
-        return !(empty($this->description) 
-                || empty($this->id_materiel)
-                || empty($this->id_zone)
+    {                                        
+                return !(empty($this->descriptions) 
                 || empty($this->id_lieu)
+                || empty($this->id_secteur) 
+                || empty($this->id_materiel)                
                 || empty($this->id_batiment)
-                || empty($this->id_demandeur) 
-                || empty($this->id_technicien)
-                || empty($this->detail) 
-                || empty($this->urgence)                
-                || empty($this->date_prevu)
-                || empty($this->date_debut) 
-                || empty($this->date_fin) 
-                || empty($this->externe));
+                || empty($this->id_demandeur)
+                || empty($this->detail)            
+                || empty($this->urgence))
+                || $this->date_prevu
+                || $this->id_technicien;   
+              /*  || $this->date_demande  
+                                                                
+               
+                || $this->date_debut 
+                || $this->date_fin 
+                || $this->externe; */                                                  
     }
     //setter 
     public function setId_Lieu($id_lieu)
     {
-        $this->id_lieu = (int) $id_lieu;
+        $this->id_lieu = (int)$id_lieu;
     }
     public function setId_batiment($id_batiment)
     {
-        $this->id_batiment = (int) $id_batiment;
+        $this->id_batiment = (int)$id_batiment;
     }  
-    public function setId_Zone($id_zone)
+    public function setId_secteur($id_secteur)
     {
-        $this->id_zone = (int) $id_zone;                         
+        $this->id_secteur = (int)$id_secteur;                         
     } 
     public function setId_materiel($id_materiel)
     {
-        $this->id_materiel = (int) $id_materiel;
+        $this->id_materiel = (int)$id_materiel;
     } 
     public function setId_demandeur($id_demandeur)
     {
-        $this->id_demandeur = (int) $id_demandeur;
+        $this->id_demandeur = (int)$id_demandeur;
     }
     public function setId_technicien($id_technicien)
     {
-        $this->id_technicien = (int) $id_technicien;
-    }
-    
-    public function setDescription($description)
+        $this->id_technicien = (int)$id_technicien;
+    }    
+    public function setDescriptions($descriptions)
     {
-        if(!is_string($description) || empty($description))
+        if(!is_string($descriptions) || empty($descriptions))
         {
             $this->erreurs[] = self::DESCRIPTION_INVALIDE;
         }
         else
         {
-            $this->description = $description;
+            $this->descriptions = $descriptions;
         }    
     }     
     public function setDetail($detail)
@@ -114,99 +112,75 @@ class Travaux extends AbstractObjet
          $this->date_demande = $date_demande;
     }
     public function setDate_prevu($date_prevu)
-    {
-        if(empty($date_prevu))
-        {
-            $this->erreurs[] = self::DATE_PREVU_INVALIDE;
-        }
-        else{
-            $this->date_prevu = $date_prevu;
-        }
+    {            
+       $this->date_prevu = $date_prevu;        
     }  
-    public function setDate_debut($date_debut) 
-    {
-        if(empty($date_debut))
-        {
-            $this->erreurs[] = self::DATE_DEBUT_INVALIDE;
-        }
-        else{
-            $this->date_debut = $date_debut;
-        }
+    public function setDate_debut( $date_debut) 
+    {                           
+            $this->date_debut = $date_debut;       
     }  
     public function setDate_fin($date_fin) 
-    {
-        if(empty($date_fin))
-        {
-            $this->erreurs[] = self::DATE_FIN_INVALIDE;
-        }
-        else{
-            $this->date_fin = $date_fin;
-        }
+    {                           
+            $this->date_fin = $date_fin;      
     }  
     public function setExterne($externe)
-    {
-        if(empty($externe))
-        {
-            $this->erreurs[] = self::EXTERNE_INVALIDE;
-        }
-        else{
-            $this->externe = $externe;
-        }
+    {                  
+            $this->externe = $externe;      
     }
     //getter 
-    public function getId_lieu()
+    public function id_lieu()
     {
         return $this->id_lieu;
     }
-    public function getId_batiment()
+    public function id_batiment()
     {
         return $this->id_batiment;
     }  
-    public function getId_Zone()
+    public function id_secteur()
     {
-        return $this->id_zone;                         
+        return $this->id_secteur;                         
     } 
-    public function getId_materiel()
+    public function id_materiel()
     {
         return $this->id_materiel;
     } 
-    public function getId_demandeur()
+    public function id_demandeur()
     {
         return $this->id_demandeur;
     }
-    public function getId_technicien()
+    public function id_technicien()
     {
         return $this->id_technicien;
     }    
-    public function getDescription()
+    public function descriptions()
     {        
-        return $this->description;          
+        return $this->descriptions;          
     }     
-    public function getDetail()
+    public function detail()
     {               
         return $this->detail;             
     } 
-    public function getUrgence()    
+    public function urgence()    
     {                         
         return $this->urgence;            
     } 
-    public function getDate_demande()
+    public function date_demande()
     {
         return $this->date_demande;
     }
-    public function getDate_prevu()
+    public function date_prevu()
     {                   
         return $this->date_prevu;        
     }  
-    public function getDate_debut() 
+    public function date_debut() 
     {                           
         return $this->date_debut;        
     }  
-    public function getDate_fin() 
+    public function date_fin() 
     {        
         return $this->date_fin;        
     }  
-    public function getExterne()
+    public function externe()
     {                     
         return $this->externe;
     

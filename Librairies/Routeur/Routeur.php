@@ -18,10 +18,10 @@ class Routeur{
 
     public function __construct($url)
     {
-        $this->ctrlUser = new UserController();
+       /* $this->ctrlUser = new UserController();
         $this->loader = new \Twig\Loader\FilesystemLoader(['Librairies/View', 'Librairies/Templates']);
         $this->twig = new \Twig\Environment($this->loader, ['debug' => true,]); 
-        $this->twig->addExtension(new \Twig\Extension\DebugExtension());
+        $this->twig->addExtension(new \Twig\Extension\DebugExtension());*/
         session_start(); 
         
         $this->url = $url;

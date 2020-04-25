@@ -1,5 +1,5 @@
 
-{% extends "head.twig" %}
+{% extends "Head.twig" %}
 
 {% block title %}
     {% if user is defined %}
@@ -11,8 +11,7 @@
 
  {% block content %} 
 <div class="container">         
- <p>
-    <button><a href="Accueil">Acceuil</a></button> </br>
+ <p>    
     {% if user is defined %}
        <p>Modifier utilisateur</p>
     {% else %}
@@ -44,13 +43,12 @@
                     <p>le lieu est invalide!</p>
                 {% endif %}
                     <label for="lieu">Lieu:</label></br>
-                    <select name="lieu">
-                        <option value="">sete</option> 
-
-                    </select></br>  
+                    <input type="text" name="lieuName" value="{{ session.lieu}}"/></br>
+                    <input type="hidden" name="lieu" value="{{ session.lieuId }}"/>
+ 
 
                 {% if 5 in user %}
-                    <p>le niveau est invalide!</p>
+                    <p>Vous devez sélectionner un nivau</p>
                 {% endif %}
                     <label for="niveau">Niveau:</label></br>                
                     <input type="radio" name="niveau" value="admin" {% if user.niveau == "admin" %} checked{% endif %}/>admin

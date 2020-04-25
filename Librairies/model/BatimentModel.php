@@ -6,6 +6,7 @@ Desc: bdd Batiment
 Created:  2020-04-13T14:12:14.530Z
 Modified: !date!
 */
+namespace App\model;
 
 use PDO;
 use App\Objet\Batiment;
@@ -22,22 +23,24 @@ class BatimentModel{
     
     public function add(Batiment $batiment)
     {
-        $q = $this->db->prepare('INSERT INTO Batiment (id_lieu, batiment) VALUES (:id_lieu, :batiment');
+        $q = $this->db->prepare('INSERT INTO Batiment (id_lieu, nom) VALUES (:id_lieu, :nom');
     
         $q->bindValue(':id_lieu', $batiment->id_lieu(), PDO::PARAM_INT);  
-        $q->bindValue(':batiment', $batiment->batiment(), PDO::PARAM_STR);         
+        $q->bindValue(':nom', $batiment->nom(), PDO::PARAM_STR);         
 
         $q->execute();
     }
     public function delete($id)
     {
         $this->db->exec('DELETE FROM Batiment WHERE id= '.(int)$id);
-    }
-    public function BatimentList($id_lieu)
-    {
-        $q = $this->db->prepare = 'SELECT batiment FROM Batiment WHERE id_lieu = :id_lieu';
+    }    
+    public function BatimentList($id)
+    {                 
+        $q = $this->db->prepare('SELECT * FROM Batiment WHERE id_lieu = :id');
+       
+        $q->bindValue(':id', $id, PDO::PARAM_INT);
 
-        $q->bindValue(':id_lieu', $id_lieu, PDO::PARAM_INT);
+        $q->execute(); 
 
         $q->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'App\Objet\Batiment');
     
@@ -52,6 +55,7 @@ class BatimentModel{
         $q = $this->db->prepare('SELECT * FROM Batiment WHERE id =:id');
 
         $q->bindValue(':id', $id, PDO::PARAM_INT);
+        
         $q->execute();   
         
         $q->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'App\Objet\Batiment');
@@ -64,9 +68,9 @@ class BatimentModel{
     }
     protected function update(Batiment $batiment)
     {
-        $q = $this->db->prepare('UPDATE Batiment SET batiment = :batiment  WHERE id = :id');
+        $q = $this->db->prepare('UPDATE Batiment SET nom = :nom  WHERE id = :id');
 
-        $q->bindValue(':batiment', $batiment->batiment(), PDO::PARAM_STR);          
+        $q->bindValue(':nom', $batiment->nom(), PDO::PARAM_STR);          
         $q->bindValue(':id', $batiment->id(), PDO::PARAM_INT);
 
         $q->execute();

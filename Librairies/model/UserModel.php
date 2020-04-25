@@ -3,6 +3,7 @@ namespace App\model;
 
 use PDO;
 use App\Objet\User;
+use RuntimeException;
 
 class UserModel
 {
@@ -14,13 +15,13 @@ class UserModel
     }
     public function add(User $user)
     {
-        $q = $this->db->prepare('INSERT INTO User(nom, prenom , email, pwd, lieu, niveau , userAdd, userModif) VALUES(:nom, :prenom, :email, :pwd, :lieu, :niveau, :userAdd, :userModif)');
+        $q = $this->db->prepare('INSERT INTO User (nom, prenom , email, pwd, id_lieu, niveau , userAdd, userModif) VALUES (:nom, :prenom, :email, :pwd, :id_lieu, :niveau, :userAdd, :userModif)');
     
         $q->bindValue(':nom', $user->nom(), PDO::PARAM_STR);
         $q->bindValue(':prenom', $user->prenom(), PDO::PARAM_STR);
         $q->bindValue(':email', $user->email(), PDO::PARAM_STR);
         $q->bindValue(':pwd', $user->pwd(), PDO::PARAM_STR);
-        $q->bindValue(':lieu', $user->lieu(), PDO::PARAM_STR);
+        $q->bindValue(':id_lieu', $user->lieu(), PDO::PARAM_INT);
         $q->bindValue(':niveau', $user->niveau(), PDO::PARAM_STR);
         $q->bindValue(':userAdd', $user->userAdd(), PDO::PARAM_STR);
         $q->bindValue(':userModif', $user->userModif(), PDO::PARAM_STR);
@@ -44,6 +45,20 @@ class UserModel
         $q->closeCursor();
 
         return $userList;
+    }
+    public function listTech($id)
+    {        
+        $q = $this->db->query('SELECT nom, prenom, id FROM User WHERE id_lieu = '.$id.' AND niveau = "3" ');
+
+      //  $q->bindValue(':id',$id , PDO::PARAM_STR);
+
+        $q->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'App\Objet\User');
+    
+        $techList = $q->fetchAll();
+        
+        $q->closeCursor();
+
+        return $techList;
     }
     public function uniqueUser($id)
     {
