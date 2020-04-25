@@ -1,0 +1,48 @@
+{#
+Author: fpodev (fpodev@gmx.fr)
+ActifTvx.twig (c) 2020
+Desc: description
+Created:  2020-04-20T13:48:42.440Z
+Modified: !date!
+#}
+{% extends "Head.twig" %}
+
+{% block title %}Liste {{ title }} {% endblock %}
+
+{% block content %}  
+    {% if title == "bâtiment" %} 
+    <div class="card col-md-2">
+        <p> Ville: {{ session.lieuVue|title }} </p> 
+    </div>
+    {% endif %}
+
+    {% if title == "secteur" %} 
+    <div class="card col-md-2">
+        <p> Ville: {{ session.lieuVue|title }} </p> 
+        <p> Bâtiment: {{ session.batiment|title }} </p>
+    </div>
+    {% endif %}
+
+    {% if title == 'matériel' %}
+    <div class="card col-md-2">        
+        <p> Ville: {{ session.lieuVue|title }} </p> 
+        <p> Bâtiment: {{ session.batiment|title }} </p>
+        <p> Secteur: {{ session.secteur|title }} </p>
+    </div> 
+    {% endif %}   
+
+<div class="container">
+    <h1>DEMANDE DE TRAVAUX</h1>
+    <h2>Pour quel {{ title }} faites vous une demande de travaux</h2>
+</div>
+<div class="container"> 
+    <div class="row">    
+{% for value in value %}     
+        <div class="card col-md-3">            
+            <p> {{ value.nom }} </p>                             
+            <a href='{{ title|title }}={{ value.id }}' class="btn btn-primary">Selectionner ce {{ title }}</a>             
+        </div>           
+{% endfor %} 
+    </div>
+</div>
+{% endblock %}    

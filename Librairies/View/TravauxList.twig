@@ -1,0 +1,41 @@
+{#
+Author: fpodev (fpodev@gmx.fr)
+TravauxList.twig (c) 2020
+Desc: description
+Created:  2020-04-22T14:33:03.043Z
+Modified: !date!
+#}
+{% extends "Head.twig" %}
+
+{% block title %} {{ title|title }} {% endblock %}
+
+{% block content %} 
+<div class="container">
+<h1>{{ title }}</h1>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Numero</th>
+      <th>Description</th>
+      <th>Urgence</th>
+      <th>Matériel</th>
+      <th>Date demande</th> 
+      <th>Action</th>          
+    </tr>
+  </thead>
+  <tbody>
+  {% for tvx in tvx %}
+    <tr>      
+      <td>{{ tvx.id }}</td>
+      <td>{{ tvx.descriptions }}</td>
+      <td>{{ tvx.urgence }}</td>
+      <td>{{ tvx.nom }}</td>
+      <td>{{ tvx.date_demande|format_datetime(locale='fr') }}</td> 
+      <td>
+      <a href='planifier-travaux={{ tvx.id }} '><i class="far fa-calendar-alt fa-2x"></a></i> | 
+      <a href="supprimer={{ tvx.id }}"><i class="fas fa-trash-alt fa-2x"></a></i>
+      </td>
+    <tr>
+   {% endfor %}  
+{% endblock %}

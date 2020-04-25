@@ -1,0 +1,51 @@
+{#
+Author: fpodev (fpodev@gmx.fr)
+ActifList.twig (c) 2020
+Desc: Affiche la liste des villes || bâtiments || secteurs || matériels
+Created:  2020-04-14T08:01:29.787Z
+Modified: !date!
+#}
+{% extends "Head.twig" %}
+
+{% block title %}Liste {{ title }} {% endblock %}
+
+{% block content %}  
+
+    {% if title == "bâtiments" %} 
+    <p> Ville: {{ session.lieuVue|title }} </p> 
+    {% endif %}
+
+    {% if title == "secteurs" %} 
+    <p> Ville: {{ session.lieuVue|title }} </p> 
+    <p> Bâtiment: {{ session.batiment|title }} </p>
+    {% endif %}
+
+    {% if title == 'matériels' %}
+    <p> Ville: {{ session.lieuVue|title }} </p> 
+    <p> Bâtiment: {{ session.batiment|title }} </p>
+    <p> Secteur: {{ session.secteur|title }} </p> 
+    {% endif %}   
+
+<div class="container">
+<h1>Voici la liste des {{ title }} </h1>
+</div>
+<div class="container">    
+    <table> 
+        <tr>
+            <th>{{ title|title }}</th>                                        
+            <th>Voir</th>
+            <th>Editer</th>
+            <th>Supprimer</th>
+        </tr>   
+{% for value in value %}  
+        <tr>
+            <td> {{ value.nom }} </td>                    
+            <td><a href='{{ title|title }}={{ value.id }} '><i class="fas fa-eye fa-lg"></i></a></td> 
+            <td><a href='modifier={{ value.id }} '><i class="fas fa-edit fa-lg"></i></a></td> 
+            <td><a href='supprimer={{ value.id }} '><i class="far fa-trash-alt fa-lg"></i></a></td> 
+        </tr>        
+{% endfor %}
+    </table>
+   <a href='Ajouter-{{ title }}'><i class="fas fa-user-plus fa-2x"></i></a>
+</div>
+{% endblock %}    

@@ -1,0 +1,92 @@
+{#
+Author: fpodev (fpodev@gmx.fr)
+PlanifTravaux.twig (c) 2020
+Desc: description
+Created:  2020-04-23T08:34:52.327Z
+Modified: !date!
+#}
+{% extends "Head.twig" %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+<h1> {{ title }} </h1>
+ <div class="container">          
+    <div class='Create'>         
+    <form action="Planification-valide" method="post">
+        <div class="row">
+        <div class="col"> 
+                    <label for="date_demande">Date de la demande de travaux:</label><br>
+                    <input type="text" name="date_demande" value="{{ tvx.date_demande|format_datetime(locale='fr') }}" readonly /><br>  
+
+                    <label for="demandeur"> Email du demandeur:</label><br>
+                    <input type="text" name="demandeur" value="{{ tvx.email }}" readonly /><br>
+                    <input type="hidden" name="id_demandeur" value={{ tvx.idDemandeur }}/>
+
+                    <label for="ville"> Ville:</label><br>
+                    <input type="text" name="lieu" value="{{ tvx.lieu }}" readonly /><br> 
+                    <input type="hidden" name="id_lieu" value="{{ tvx.nLieu }}"/> 
+
+                    <label for="batiment">Batiment:</label><br>
+                    <input type="text" name="batiment" value="{{ tvx.batiment }}" readonly /><br> 
+                    <input type="hidden" name="id_batiment" value="{{ tvx.idBatiment }}"/> 
+
+                    <label for="secteur"> Secteur:</label><br>
+                    <input type="text" name="secteur" value="{{ tvx.secteur }}" readonly /><br>
+                    <input type="hidden" name="id_secteur" value="{{ tvx.idSecteur }}"/> 
+
+                    <label for="materiel"> Materiel:</label><br>
+                    <input type="text" name="materiel" value="{{ tvx.materiel }}" readonly /><br>
+                    <input type="hidden" name="id_materiel" value="{{ tvx.idMateriel }}"/> 
+
+                {% if 2 in tvx %}
+                    <p>La description est invalide!</p>
+                {% endif %}
+                    <label for="descriptions">Description:</label><br>
+                    <input type="text" name="descriptions" value="{{ tvx.descriptions }}"/><br>
+                {% if 3 in tvx  %}
+                    <p>Le détail est invalide!</p>
+                {% endif %}
+                    <label for="detail">Détail:</label><br>
+                    <textarea name="detail"> {{ tvx.detail}} </textarea><br> 
+        </div>                    
+        <div class="col">          
+                {% if 4 in tvx %}
+                    <p>Vous devez sélectionné un niveau d'urgence!</p>
+                {% endif %}    
+                    <label for="">Urgence:</label><br>                    
+                    <input type="radio" name="urgence" value="1" {% if tvx.urgence == 1 %} checked{% endif %} readonly />1- activité normale
+                    <input type="radio" name="urgence" value="2" {% if tvx.urgence == 2 %} checked{% endif %} readonly />2- perturbation modérée <br>
+                    <input type="radio" name="urgence" value="3" {% if tvx.urgence == 3 %} checked{% endif %} readonly />3- perturbation forte
+                    <input type="radio" name="urgence" value="4" {% if tvx.urgence == 4 %} checked{% endif %} readonly />4- activité bloquée                                    
+                    <br>                                                                        
+                                                                                                           
+                 {% if 5 in tvx %}  
+                  <p> Vous devez saisir une date d'intervention</p>
+                 {% endif %}
+                   <label for="date_prevu">Programmer intervention</label><br>
+                   <input type="date" name="date_prevu" value="{{ tvx.date_prevu }}" required/><br> 
+                 {% if 9 in tvx %}
+                 <p> Vous devez selectionner un technicien pour cette intervention</p>
+                 {% endif %}
+                   <label for="technicien">Selectionner un technicien pour effecteur les travaux:</label><br>                   
+                   <select name="id_technicien" required>                                         
+                        <option value={{ tvx.techId }}>{{ tvx.techNom }}</option> 
+                         {% for tech in tech %}                                       
+                        <option value={{ tech.id }}>{{ tech.nom }}</option>                          
+                          {% endfor %}                
+                   </select>                 
+                  <input type="hidden" name="date_debut" value=""/>
+                  <input type="hidden" name="date_fin" value=""/>
+                  <input type="hidden" name="id" value="{{ id }}"/><br>
+                  <label for="externe">Intervention société externe:</label><br>
+                  <input type="radio" name="externe" value="oui" {% if tvx.externe == oui %} checked{% endif %}/>Oui
+                  <input type="radio" name="externe" value="non" {% if tvx.externe == non %} checked{% endif %}/>Non <br>
+                  <button type="sumit" name="planifier" value="valider">Valider</button>
+        </div>
+      </form>             
+        </div>
+    </div> 
+</div> 
+{% endblock %}        
+
