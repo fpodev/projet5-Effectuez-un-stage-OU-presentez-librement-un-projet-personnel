@@ -48,9 +48,9 @@ class UserModel
     }
     public function listTech($id)
     {        
-        $q = $this->db->query('SELECT nom, prenom, id FROM User WHERE id_lieu = '.$id.' AND niveau = "3" ');
+        $q = $this->db->query('SELECT nom, prenom, id FROM User WHERE id_lieu = '.$id.' AND niveau = "2" ');
 
-      //  $q->bindValue(':id',$id , PDO::PARAM_STR);
+      //  $q->bindValue(':id',$id , PDO::PARAM_INT);
 
         $q->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'App\Objet\User');
     
