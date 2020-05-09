@@ -10,6 +10,7 @@ namespace App\Objet;
 
 
 use App\Objet\ExtendsObjet;
+use DateTime;
 
 class Travaux extends ExtendsObjet
 {        
@@ -32,26 +33,37 @@ class Travaux extends ExtendsObjet
           DETAIL_INVALIDE = 3,
           URGENCE_INVALIDE = 4;          
  
-    public function isValid()
+   /* public function isValid()
     {                                        
-                return !(empty($this->descriptions) 
+                return                                      
+    }*/
+    public function validDemande()
+    {
+        return !(empty($this->descriptions) 
                 || empty($this->id_lieu)
                 || empty($this->id_secteur) 
                 || empty($this->id_materiel)                
                 || empty($this->id_batiment)
                 || empty($this->id_demandeur)
                 || empty($this->detail)            
-                || empty($this->urgence))
-                || $this->date_prevu
-                || $this->id_technicien;   
-              /*  || $this->date_demande  
-                                                                
-               
-                || $this->date_debut 
-                || $this->date_fin 
-                || $this->externe; */                                                  
+                || empty($this->urgence));
     }
-    //setter 
+    public function validPlanif()
+    {
+        return !(empty($this->date_prevu) 
+                || empty($this->descriptions)            
+                || empty($this->detail) 
+                || empty($this->id_technicien) 
+                || empty($this->externe));
+    }
+    public function validStart()
+    {
+        return !(empty($this->date_debut)) ;                      
+    }
+    public function validClose()
+    {
+        return !(empty($this->date_fin));
+    }
     public function setId_Lieu($id_lieu)
     {
         $this->id_lieu = (int)$id_lieu;
@@ -115,7 +127,7 @@ class Travaux extends ExtendsObjet
     {            
        $this->date_prevu = $date_prevu;        
     }  
-    public function setDate_debut( $date_debut) 
+    public function setDate_debut($date_debut) 
     {                           
             $this->date_debut = $date_debut;       
     }  
