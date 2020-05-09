@@ -6,9 +6,9 @@ Desc: description
 Created:  2020-04-13T09:42:15.632Z
 Modified: !date!
 */
+
 use App\Routeur\Routeur;
 require 'vendor/autoload.php'; 
-
 $router = new Routeur($_GET['url']);
 
 $router->get('/', "User#home"); 
@@ -31,13 +31,19 @@ $router->get('Bâtiments=:id', 'Secteur#secteurList');
 $router->get('Secteurs=:id', 'Materiel#materielList');
 
 $router->get('Demande-Travaux', 'Travaux#travauxPage');
-$router->get('Batiment=:id', 'Travaux#travauxPage');
+$router->get('Bâtiment=:id', 'Travaux#travauxPage');
 $router->get('Secteur=:id','Travaux#travauxPage');
 $router->get('Matériel=:id', 'Travaux#formulaireTravaux');
 $router->post('Validation', 'Travaux#addTravaux');
-$router->get('Liste-nouveaux-travaux', 'Travaux#TravauxList');
+$router->get('Liste-nouveaux-travaux', 'Travaux#travauxList');
+$router->get('Liste-travaux-planifiés', 'Travaux#travauxList');
+$router->get('Voir=:id', 'Travaux#uniqueTravaux');
 $router->get('Planifier-travaux=:id', 'Travaux#uniqueTravaux');
-$router->post('Planification-valide', 'Travaux#addTravaux');
+$router->get('edit-travaux=:id', 'Travaux#uniqueTravaux');
+$router->get('supprimer-travaux=:id', 'Travaux#deleteTravaux');
+$router->post('Liste-nouveaux-travaux', 'Travaux#planifTravaux');
 
+$router->get('apiGet', 'Api#api');
+$router->get('Mes-travaux-planifiés', 'Travaux#travauxTech');
 
 $router->run(); 
