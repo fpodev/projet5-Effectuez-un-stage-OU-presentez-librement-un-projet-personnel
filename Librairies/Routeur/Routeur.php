@@ -4,6 +4,7 @@ namespace App\Routeur;
 require 'vendor/autoload.php';
 
 
+use Exception;
 use Twig\Environment;
 use App\Routeur\Route;
 use Twig\Loader\FilesystemLoader;
@@ -27,7 +28,7 @@ class Routeur{
         $this->url = $url;
       }
       
-      public function get($path, $callable, $name = null){
+    public function get($path, $callable, $name = null){
         return $this->add($path, $callable, $name, 'GET');
     }
 
@@ -50,19 +51,19 @@ class Routeur{
 
     public function run(){
         if(!isset($this->routes[$_SERVER['REQUEST_METHOD']])){
-            throw new RouterException('REQUEST_METHOD does not exist');
+            throw new Exception('REQUEST_METHOD does not exist');
         }
         foreach($this->routes[$_SERVER['REQUEST_METHOD']] as $route){
             if($route->match($this->url)){
                 return $route->call();
             }
         }
-        throw new RouterException('No matching routes');
+        throw new Exception('No matching routes');
     }
 
     public function url($name, $params = []){
         if(!isset($this->namedRoutes[$name])){
-            throw new RouterException('No route matches this name');
+            throw new Exception('No route matches this name');
         }        
         return $this->namedRoutes[$name]->getUrl($params);
     }
