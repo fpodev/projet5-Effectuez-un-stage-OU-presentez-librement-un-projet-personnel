@@ -25,7 +25,8 @@ class Render{
                     echo $this->twig->render(''.$vue.'.twig');
 
                 }
-                else{                                          
+                else{  
+                    $this->twig->addGlobal('count', $value);                                                                                              
                     echo $this->twig->render(''.$vue.'.twig', $value);  
                 }                        
              }
