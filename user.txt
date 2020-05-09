@@ -1,0 +1,2 @@
+ Tech1 = id="faux@mail.com" pwd="LOdzvJctyu"
+ Tech2 = id="Pre2@mail.com" pwd=""TKQE5Z07pU"
