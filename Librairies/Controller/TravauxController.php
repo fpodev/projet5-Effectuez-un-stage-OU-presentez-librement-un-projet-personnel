@@ -17,6 +17,7 @@ use App\model\SecteurModel;
 use App\model\TravauxModel;
 use App\model\BatimentModel;
 use App\model\MaterielModel;
+use App\Controller\UserController;
 
 class TravauxController {
 
@@ -28,6 +29,7 @@ class TravauxController {
 
     public function __construct(){
         $db = ConnexionDb::getPDO();
+        $this->userCtrl = new UserController();
         $this->render = new Render();  
         $this->travaux = new TravauxModel($db);   
         $this->ville = new LieuModel($db);         
@@ -35,31 +37,42 @@ class TravauxController {
         $this->user = new UserModel($db);
         $this->materiel = new MaterielModel($db);
         $this->batiment = new BatimentModel($db);
+        $this->date = new \DateTime();
     }
-    public function travauxList(){                         
-            $title = "Liste des demandes de travaux";                
-            $valueList = $this->travaux->travauxList(); 
+    
+    public function travauxTech(){                                                    
+            $title = "Liste de mes travaux";                
 
-            $this->render->view('TravauxList',['title' => $title, 'tvx' => $valueList]);              
+            $this->render->view('TravauxTech',['title' => $title]);              
+    }
+    public function travauxList(){
+        if(stristr((urldecode($_SERVER['REQUEST_URI'])), 'travaux-planifiés')){
+            $title = "Liste des travaux planifiés";                
+            $param = 'NOT NULL';
+            $etat ='1';
+            
+        }                       
+        else
+        {
+            $title = "Liste des nouvelles demandes de travaux";                
+            $param = 'NULL';
+            $etat = '2';
+        }
+        $valueList = $this->travaux->travauxList($param);
+       
+        $this->render->view('TravauxList',['title' => $title, 'tvx' => $valueList, 'planif'=> $etat]);               
+
     }
     public function uniqueTravaux($id){
+            $_SESSION['lieuId'] = "null";
             $id = $id;
             $title = "Planification des travaux demandés";
-            $value = $this->travaux->uniqueTravaux($id);           
-            $techList = $this->user->listTech($value["nLieu"]);
-            
-
-           $this->render->view('PlanifTravaux', ['title' => $title,'tvx' => $value, 'tech' => $techList, "id" => $id]);
+            $value = $this->travaux->uniqueTravaux($id);                    
+            $techList = $this->user->listTech($_SESSION['lieuId']);
+           
+            $this->render->view('PlanifTravaux', ['title' => $title,'tvx' => $value, 'tech' => $techList]);
     }
-    public function addTravaux(){ 
-            $datePrev =  $_POST['date_prevu'];
-            if($_POST['id_technicien'] = "");
-            if($datePrev == "")
-            {
-                $datePrev = "";
-            } 
-            else{ $_POST['date_prevu'] = $_POST['date_prevu'];}
-
+    public function addTravaux(){                   
             $travaux = new Travaux(                     
                 [               
                     'id_lieu' => $_POST['id_lieu'],
@@ -71,22 +84,12 @@ class TravauxController {
                     'detail' => $_POST['detail'],
                     'urgence' => $_POST['urgence'], 
                     'descriptions' => $_POST['descriptions'],
-                    'detail' => $_POST['detail']                  
-                   /* 'id_technicien' =>  $_POST['id_technicien'],                                
-                    'date_prevu' => $_POST['date_prevu'],                    
-                    //'date_debut' => $_POST['date_debut'],                
-                 //   'date_fin'=> $_POST['date_fin'],  
-                   // 'externe' => $_POST['externe'], */                             
+                    'detail' => $_POST['detail']                                                              
                 ]            
-                ); 
-        var_dump($travaux);   
-        if(isset($_POST['id']))  
-        {
-            $travaux->setId($_POST['id']);
-        }
-        if($travaux->isValid()) 
-        {   
-         
+                );
+                              
+        if($travaux->validDemande()) 
+        {            
             $this->travaux->save($travaux);
         }
         else
@@ -94,21 +97,25 @@ class TravauxController {
             $erreurs = $travaux->erreurs();                     
             
             $this->render->view('DemandeTvx', ['tvx' => $erreurs]); 
-        }             
+        } 
+         $this->userCtrl->home();        
     }
     public function planifTravaux(){
             $travaux = new Travaux(                     
-                [             
-                                
-                                      
+                [        
+                    'descriptions' => $_POST['descriptions'],
+                    'detail' => $_POST['detail'],                               
+                    'id_technicien' =>  $_POST['id_technicien'],                            
+                    'date_prevu' => $_POST['date_prevu'],                                      
+                    'externe' => $_POST['externe'],                              
                 ]            
                 ); 
-      
+                 
         if(isset($_POST['id']))  
         {
             $travaux->setId($_POST['id']);
-        }
-        if($travaux->isValid()) 
+        }        
+        if($travaux->validPlanif()) 
         { 
             $this->travaux->save($travaux);
             $this->travauxList();
@@ -117,9 +124,58 @@ class TravauxController {
         {
             $erreurs = $travaux->erreurs();                     
             
+            $this->render->view('PlanifTravaux', ['tvx' => $erreurs]);
+        }
+    } 
+    public function startTravaux($donnee){        
+        $travaux = new Travaux(                     
+            [                                                                                                              
+                'date_debut' => $this->date->format('d-m-Y H:i:s'),                                                                 
+            ]            
+            ); 
+               
+        if(isset($donnee->id))  
+        {
+            $travaux->setId($donnee->id);
+        }      
+        if($travaux->validStart()) 
+        { 
+            $this->travaux->save($travaux);                      
+        }
+        else
+        {
+            $erreurs = $travaux->erreurs();                     
+            
             $this->render->view('DemandeTvx', ['tvx' => $erreurs]);
         }
-    }       
+    }  
+    public function valid($travaux){
+            
+    }
+    public function closeTravaux(){        
+        $travaux = new Travaux(                     
+            [                                                                                                        
+               'date_fin'=> $this->date->format('Y-m-d H:i:s'),                                         
+            ]            
+            );                 
+        if(isset($_POST['id']))  
+        {
+            $travaux->setId($_POST['id']);
+        }
+        
+        if($travaux->validClose()) 
+        { 
+            $this->travaux->save($travaux);
+            
+            $this->travauxList();
+        }
+        else
+        {
+            $erreurs = $travaux->erreurs();                     
+            
+            $this->render->view('DemandeTvx', ['tvx' => $erreurs]);
+        } 
+    }         
     public function travauxPage($id = null){
         if($id == null){            
             $id = $_SESSION['lieuId'];            
@@ -133,7 +189,7 @@ class TravauxController {
                     $_SESSION['lieuVue'] = $ville->nom();                
                     $valueList = $this->batiment->batimentList($id);                    
                 }                                
-                elseif(stristr($_SERVER['REQUEST_URI'], 'Batiment', true))
+                elseif(stristr((urldecode($_SERVER['REQUEST_URI'])), 'Bâtiment', true))
                 {  
                     $title = 'secteur';  
                     $valueList = $this->secteur->secteurList($id);  
@@ -168,6 +224,13 @@ class TravauxController {
 
             $this->render->view('DemandeTvx', ['title' => $title]);
         }
-    } 
-   
+    }      
+
+   public function deleteTravaux($id){
+       
+        $this->travaux->delete($id);     
+
+        $this->travauxList();
+                
+   }
 }    
