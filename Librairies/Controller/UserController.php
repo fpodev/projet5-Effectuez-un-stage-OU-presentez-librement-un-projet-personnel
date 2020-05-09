@@ -28,7 +28,7 @@ class UserController{
     public function addUser(){       
         $pass = substr(str_shuffle(
             'abcdefghijklmnopqrstuvwxyzABCEFGHIJKLMNOPQRSTUVWXYZ0123456789'),1, 10); 
-         
+       
         $user = new User(
             [
                 'nom' => $_POST['nom'],
@@ -65,15 +65,13 @@ class UserController{
                 $erreurs = $user->erreurs();                     
             
                 $this->render->view('CreateUser', ['user' => $erreurs]);                                                      
-        } 
-          
+        }           
     }    
     public function listUser(){
             $userList = $this->user->listUser();                             
 
             $this->render->view('UserList', ['userList' => $userList]); 
-    }
-    
+    }    
     public function changeUser($id){                
             if(preg_match("#[0-9]#" , $id))
             {
@@ -115,9 +113,9 @@ class UserController{
                 $_SESSION['lieuId'] = $resultat['id_lieu'];
                 $_SESSION['lieu'] = $ville->nom();
                 $_SESSION['niveau'] = $resultat['niveau'];
-                $_SESSION['id_user'] = $resultat['id'];                
-
-                $this->render->view('Home'); 
+                $_SESSION['id_user'] = $resultat['id'];             
+                                
+                $this->home(); 
             }
         }                                           
     public function ChangePass(){                                        
@@ -141,11 +139,18 @@ class UserController{
                 }    
     }  
     public function home(){ 
+       if(empty($_SESSION['niveau']) ){
+            $userTvx = 'null';
+       }       
+        elseif($_SESSION['niveau'] == '2')
+         {                  
+        $userTvx = $this->travaux->countUser($_SESSION['id_user']); 
+         };                        
           $countAll =  $this->travaux->countAll();
           $countPlanif = $this->travaux->countPlanif();             
-          $countNew = $countAll - $countPlanif;                
+          $countNew = $countAll - $countPlanif;                      
          
-            $this->render->view('Home', ['countNew'=> $countNew, 'countPlanif' => $countPlanif]);   
+            $this->render->view('Home', ['countNew'=> $countNew, 'countPlanif' => $countPlanif, 'countUser' => $userTvx]);   
                 
         }       
 }
