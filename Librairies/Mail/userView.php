@@ -1,4 +1,8 @@
-
+<!DOCTYPE html>
+<html lang="Fr">
+<head>
+      <meta charset="UTF-8">      
+</head>
 <html>  
 <body>
 <?php
