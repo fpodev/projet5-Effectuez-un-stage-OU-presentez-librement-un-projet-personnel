@@ -1,0 +1,50 @@
+{#
+Author: fpodev (fpodev@gmx.fr)
+ListJs.twig (c) 2020
+Desc: description
+Created:  2020-04-26T16:01:01.057Z
+Modified: !date!
+#}
+
+{% extends "Head.twig" %}
+
+{% block title %} {{ title|title }} {% endblock %}
+
+{% block content %} 
+<div class="container">
+  <div id="table">
+    <h1 class='titre'>{{ title }}</h1>  
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Numero</th>
+          <th>Description</th>
+          <th>Urgence</th>
+          <th>Matériel</th>
+          <th>Date prevu</th> 
+          <th>Action</th>          
+        </tr>
+      </thead>
+      <tbody id="tableau">           
+      </tbody>
+    </table>
+  </div>
+</div>
+<div id="blocDetail">
+  <div class="container">    
+      <h1 class='titre'>Détail de la demande de travaux</h1>
+        <div class="card">
+          <p>Demandeur: <span id="demandeur"></span></p><br>
+          <p>Description: <span id="description"> </span></p><br>
+          <label>Détail:</label><br>
+          <textarea id="detail" readonly></textarea><br>
+          <p>Intervention entreprise externe: <span id="externe"> </span></p>
+
+          <div id= "test">                                 
+          <button id="retour" type="button" class="btn btn-secondary">Retour à la liste</button>
+          </div>
+        </div>
+  </div>
+</div>  
+{% endblock %}
+
