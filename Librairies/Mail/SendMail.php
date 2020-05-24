@@ -1,5 +1,14 @@
 <?php
 namespace App\Mail;
+/*
+Author: fpodev (fpodev@gmx.fr)
+SendMail.php (c) 2020
+Desc: Script envoir de mail de confirmation création de nouvel utilisateur.
+      Les options laissées en commentaire pour une future utilisation eventuelle
+Created:  2020-05-24T13:57:19.584Z
+Modified: !date!
+*/
+
 
 // Import PHPMailer classes into the global namespace
 // These must be at the top of your script, not inside a function
@@ -31,8 +40,8 @@ class SendMail{
         $this->mail->isSMTP();                                            // Send using SMTP
         $this->mail->Host       = 'mail.gmx.com ';                    // Set the SMTP server to send through
         $this->mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-        $this->mail->Username   = '*****.fr';                     // SMTP username
-        $this->mail->Password   = ****;                               // SMTP password
+        $this->mail->Username   = '***';                     // SMTP username
+        $this->mail->Password   =  ****;                               // SMTP password
         $this->mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPthis->maile::rENCRYPTION_SMTPS` encouraged
         $this->mail->Port       = 587;                                    // TCP port to connect to, use 465 for `PHPthis->mailer::ENCRYPTION_SMTPS` above
 
