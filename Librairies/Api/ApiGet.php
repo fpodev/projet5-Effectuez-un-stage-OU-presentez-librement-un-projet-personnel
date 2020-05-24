@@ -2,8 +2,8 @@
 
 /*
 Author: fpodev (fpodev@gmx.fr)
-index.php (c) 2020
-Desc: description
+ApiGet.php (c) 2020
+Desc: gére l'envoie d'information du serveur vers le client via ajax.
 Created:  2020-04-20T07:33:01.720Z
 Modified: !date!
 */
@@ -17,7 +17,7 @@ header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Max-Age: 3600");
 // Entêtes autorisées
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");      
-      
+           
             if(empty($valueList))
             {
                 $retour["success"] = false;  

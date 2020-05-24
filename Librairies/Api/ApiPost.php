@@ -6,7 +6,7 @@ require '../../vendor/autoload.php';
 /*
 Author: fpodev (fpodev@gmx.fr)
 ApiPost.php (c) 2020
-Desc: description
+Desc: Gére les informations reçu du client via ajax.
 Created:  2020-05-01T09:01:54.651Z
 Modified: !date!
 */
