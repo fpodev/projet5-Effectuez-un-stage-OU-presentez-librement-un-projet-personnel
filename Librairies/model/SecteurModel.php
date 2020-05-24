@@ -2,7 +2,7 @@
 /*
 Author: fpodev (fpodev@gmx.fr)
 SecteurModel.php (c) 2020
-Desc: bdd Secteur
+Desc: Liaison avec la table Secteur de la Bdd.
 Created:  2020-04-13T14:37:25.152Z
 Modified: !date!
 */
@@ -21,7 +21,7 @@ class SecteurModel{
     
     public function add(Secteur $secteur)
     {
-        $q = $this->db->prepare('INSERT INTO Secteur (id_batiment, nom) VALUES (:id_batiment, :nom');
+        $q = $this->db->prepare('INSERT INTO Secteur (id_batiment, nom) VALUES (:id_batiment, :nom)');
     
         $q->bindValue(':id_batiment', $secteur->id_batiment(), PDO::PARAM_INT);  
         $q->bindValue(':nom', $secteur->nom(), PDO::PARAM_STR);         
@@ -74,7 +74,7 @@ class SecteurModel{
     }
     public function save(Secteur $secteur)
     {
-        if ($secteur->isValid())
+        if ($secteur->isValid() || $secteur->isValidUpdate())
         {   
             $secteur->isNew() ? $this->add($secteur) : $this->update($secteur);
         }

@@ -1,7 +1,7 @@
 {#
 Author: fpodev (fpodev@gmx.fr)
-ListJs.twig (c) 2020
-Desc: description
+TravauxTech.twig (c) 2020
+Desc: Liste des travaux d'un technicien quand celui-ci est connecté.
 Created:  2020-04-26T16:01:01.057Z
 Modified: !date!
 #}
@@ -11,9 +11,12 @@ Modified: !date!
 {% block title %} {{ title|title }} {% endblock %}
 
 {% block content %} 
+ {% include 'NavBar.twig' only %}
 <div class="container">
   <div id="table">
+    <div class='text-center'>
     <h1 class='titre'>{{ title }}</h1>  
+    </div>
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -25,11 +28,13 @@ Modified: !date!
           <th>Action</th>          
         </tr>
       </thead>
+      {# Ce tableau se construit via TableauList.js #}
       <tbody id="tableau">           
       </tbody>
     </table>
   </div>
 </div>
+{# Bloc none par défaut #}
 <div id="blocDetail">
   <div class="container">    
       <h1 class='titre'>Détail de la demande de travaux</h1>
@@ -39,12 +44,12 @@ Modified: !date!
           <label>Détail:</label><br>
           <textarea id="detail" readonly></textarea><br>
           <p>Intervention entreprise externe: <span id="externe"> </span></p>
-
           <div id= "test">                                 
           <button id="retour" type="button" class="btn btn-secondary">Retour à la liste</button>
           </div>
         </div>
   </div>
 </div>  
+
 {% endblock %}
 

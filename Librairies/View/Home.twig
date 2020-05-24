@@ -1,16 +1,17 @@
-
+{#
+Author: fpodev (fpodev@gmx.fr)
+Home.twig (c) 2020
+Desc: Page acceuil avec different Item suivant le niveau de l'utilisateur
+Created:  2020-04-23T08:34:52.327Z
+Modified: !date!
+#}
 {% extends "Head.twig" %}
 
 {% block title %} Accueil {% endblock %}
 
 {% block content %} 
-<div class="container-fluid">
-    <div class="row">
-        <i class="fas fa-user col-md-6"> Bienvenue {{ session.prenom|title }} </i>
-        <i class="far fa-map col-md-6"> Vous dépendez du site de {{ session.lieu|title }} </i>             
-    </div>
-</div>  
-<div class="container">
+  {% include 'NavBar.twig' only %}                       
+<div id="home" class="container">
   {% if session.niveau  == '0' %}  
     <div class="row">                   
         {% include 'Lieu.twig' only %} 

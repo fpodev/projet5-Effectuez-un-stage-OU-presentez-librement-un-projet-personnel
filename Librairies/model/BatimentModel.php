@@ -2,7 +2,7 @@
 /*
 Author: fpodev (fpodev@gmx.fr)
 BatimentModel.php (c) 2020
-Desc: bdd Batiment
+Desc: Liaison avec la table Batiment de la Bdd.
 Created:  2020-04-13T14:12:14.530Z
 Modified: !date!
 */
@@ -23,7 +23,7 @@ class BatimentModel{
     
     public function add(Batiment $batiment)
     {
-        $q = $this->db->prepare('INSERT INTO Batiment (id_lieu, nom) VALUES (:id_lieu, :nom');
+        $q = $this->db->prepare('INSERT INTO Batiment (id_lieu, nom) VALUES (:id_lieu, :nom)');
     
         $q->bindValue(':id_lieu', $batiment->id_lieu(), PDO::PARAM_INT);  
         $q->bindValue(':nom', $batiment->nom(), PDO::PARAM_STR);         
@@ -47,7 +47,7 @@ class BatimentModel{
         $batimentList = $q->fetchAll();
 
         $q->closeCursor();
-        
+       
         return $batimentList;
     }
     public function uniqueBatiment($id)
@@ -77,7 +77,7 @@ class BatimentModel{
     }
     public function save(Batiment $batiment)
     {
-        if ($batiment->isValid())
+        if ($batiment->isValid() || $batiment->isValidUpdate())
         {   
             $batiment->isNew() ? $this->add($batiment) : $this->update($batiment);
         }

@@ -1,7 +1,7 @@
 {#
 Author: fpodev (fpodev@gmx.fr)
 DemandeTvx.twig (c) 2020
-Desc: description
+Desc: page pour faire une demande de travaux
 Created:  2020-04-20T12:34:13.312Z
 Modified: !date!
 #}
@@ -10,48 +10,51 @@ Modified: !date!
 {% block title %} {{ title }} {% endblock %}
 
 {% block content %}
-<h1> {{ title }} </h1>
- <div class="container">          
+{% include 'NavBar.twig' only %}
+<div class="container"> 
+    <div class="text-center">
+        <h1> {{ title }} </h1>
+    </div>          
     <div class='Create'>            
-      <form action="Validation" method="post">                    
-                    <label for="demandeur"> Email du demandeur:</label><br>
-                    <input type="text" name="demandeur" value="{{ session.identifiant }}" readonly /><br>
-                    <label for="ville"> Ville:</label><br>
-                    <input type="text" name="lieu" value="{{ session.lieuVue }}" readonly /><br>  
-                    <label for="batiment">Batiment:</label></br>
-                    <input type="text" name="batiment" value="{{ session.batiment }}" readonly /><br>  
-                    <label for="secteur"> Secteur:</label><br>
-                    <input type="text" name="secteur" value="{{ session.secteur }}" readonly /><br>
-                    <label for="materiel"> Materiel:</label><br>
-                    <input type="text" name="materiel" value="{{ session.materiel }}" readonly /><br>
-                {% if 2 in tvx %}
-                    <p>La description est invalide!</p>
-                {% endif %}
-                    <label for="descriptions">Description:</label><br>
-                    <input type="text" name="descriptions" value="{{ travaux.description }}"/><br>
-                {% if 3 in tvx  %}
-                    <p>Le détail est invalide!</p>
-                {% endif %}
-                    <label for="detail">Détail:</label><br>
-                    <textarea name="detail"> {{ travaux.detail}} </textarea><br>
-                {% if 4 in tvx %}
-                    <p>Vous devez sélectionné un niveau d'urgence!</p>
-                {% endif %}    
-                    <label for="">Urgence:</label><br>                    
-                    <input type="radio" name="urgence" value="1" {% if tvx.urgence == 1 %} checked{% endif %}  />1- activité normale
-                    <input type="radio" name="urgence" value="2" {% if tvx.urgence == 2 %} checked{% endif %} />2- perturbation modérée <br>
-                    <input type="radio" name="urgence" value="3" {% if tvx.urgence == 3 %} checked{% endif %}  />3- perturbation forte
-                    <input type="radio" name="urgence" value="4" {% if tvx.urgence == 4 %} checked{% endif %}  />4- activité bloquée 
+        <form action="Validation" method="post">                    
+            <label for="demandeur"> Email du demandeur:</label><br>
+            <input type="text" name="demandeur" value="{{ session.identifiant }}" readonly /><br>
+            <label for="ville"> Ville:</label><br>
+            <input type="text" name="lieu" value="{{ session.lieuVue }}" readonly /><br>  
+            <label for="batiment">Batiment:</label></br>
+            <input type="text" name="batiment" value="{{ session.batiment }}" readonly /><br>  
+            <label for="secteur"> Secteur:</label><br>
+            <input type="text" name="secteur" value="{{ session.secteur }}" readonly /><br>
+            <label for="materiel"> Materiel:</label><br>
+            <input type="text" name="materiel" value="{{ session.materiel }}" readonly /><br>
 
-                    <input type="hidden" name="id_lieu" value="{{ session.lieuId }}"/>
-                    <input type="hidden" name="id_batiment" value="{{ session.batimentId }}"/>
-                    <input type="hidden" name="id_secteur" value="{{ session.secteurId }}"/>
-                    <input type="hidden" name="id_materiel" value="{{ session.materielId }}"/>
-                    <input type="hidden" name="id_demandeur" value="{{ session.id_user }}"/>
+            {% if 2 in tvx %}                   
+                <p>La description est invalide!</p>
+            {% endif %}
+            <label for="descriptions">Description:</label><br>
+            <input type="text" name="descriptions" value="{{ travaux[0].descriptions }}" /><br>
+            {% if 3 in tvx  %}
+                <p>Le détail est invalide!</p>
+            {% endif %}
+            <label for="detail">Détail:</label><br>
+            <textarea name="detail"> {{ travaux[0].detail}} </textarea><br>
+            {% if 4 in tvx %}
+                <p>Vous devez sélectionné un niveau d'urgence!</p>
+            {% endif %}    
+            <label for="">Urgence:</label><br>                    
+            <input type="radio" name="urgence" value="1" {% if  tvx.urgence == 1 %} checked {% endif %}  />1- activité normale
+            <input type="radio" name="urgence" value="2" {% if  tvx.urgence == 2 %} checked {% endif %} />2- perturbation modérée <br>
+            <input type="radio" name="urgence" value="3" {% if  tvx.urgence == 3 %} checked {% endif %}  />3- perturbation forte
+            <input type="radio" name="urgence" value="4" {% if  tvx.urgence == 4 %} checked {% endif %}  />4- activité bloquée 
 
-                    <input type="submit" name="valider" value="Valider" />  
+            <input type="hidden" name="id_lieu" value="{{ session.lieuId }}"/>
+            <input type="hidden" name="id_batiment" value="{{ session.batimentId }}"/>
+            <input type="hidden" name="id_secteur" value="{{ session.secteurId }}"/>
+            <input type="hidden" name="id_materiel" value="{{ session.materielId }}"/>
+            <input type="hidden" name="id_demandeur" value="{{ session.id_user }}"/> <br>
 
-      </form>               
+            <input type="submit" name="valider" value="Valider" />  
+        </form>               
     </div> 
 </div> 
 {% endblock %}        

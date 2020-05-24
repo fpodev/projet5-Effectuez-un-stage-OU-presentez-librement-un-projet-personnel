@@ -2,7 +2,7 @@
 /*
 Author: fpodev (fpodev@gmx.fr)
 LieuModel.php (c) 2020
-Desc: bdd Lieu
+Desc: Liaison avec la table Lieu de la Bdd.
 Created:  2020-04-13T09:16:57.655Z
 Modified: !date!
 */
@@ -21,7 +21,7 @@ class LieuModel{
     }    
     public function add(Lieu $lieu)
     {
-        $q = $this->db->prepare('INSERT INTO Lieu (ville) VALUES (:ville)');
+        $q = $this->db->prepare('INSERT INTO Lieu (nom) VALUES (:ville)');
     
         $q->bindValue(':ville', $lieu->nom(), PDO::PARAM_STR);         
 

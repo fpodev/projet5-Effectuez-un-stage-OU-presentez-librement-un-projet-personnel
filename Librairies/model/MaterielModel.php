@@ -2,7 +2,7 @@
 /*
 Author: fpodev (fpodev@gmx.fr)
 MaterielModel.php (c) 2020
-Desc: description
+Desc: Liaison avec la table Materiel de la Bdd.
 Created:  2020-04-13T15:12:55.132Z
 Modified: !date!
 */
@@ -21,10 +21,8 @@ class MaterielModel{
     
     public function add(Materiel $materiel)
     {
-        $q = $this->db->prepare('INSERT INTO Materiel (id_lieu, id_batiment, id_secteur, nom) VALUES (:id_lieu, :id_batiment :id_secteur, :nom');
-    
-        $q->bindValue(':id_lieu', $materiel->id_lieu(), PDO::PARAM_INT);  
-        $q->bindValue(':id_batiment', $materiel->id_batiment(), PDO::PARAM_INT);  
+        $q = $this->db->prepare('INSERT INTO Materiel (id_secteur, nom) VALUES (:id_secteur, :nom)');
+       
         $q->bindValue(':id_secteur', $materiel->id_secteur(), PDO::PARAM_INT);  
         $q->bindValue(':nom', $materiel->nom(), PDO::PARAM_STR);         
 
@@ -77,7 +75,7 @@ class MaterielModel{
     }
     public function save(Materiel $materiel)
     {
-        if ($materiel->isValid())
+        if ($materiel->isValid() || $materiel->isValidUpdate())
         {   
             $materiel->isNew() ? $this->add($materiel) : $this->update($materiel);
         }

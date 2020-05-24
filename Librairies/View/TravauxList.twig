@@ -1,7 +1,7 @@
 {#
 Author: fpodev (fpodev@gmx.fr)
 TravauxList.twig (c) 2020
-Desc: description
+Desc: Affiche la liste des travaux avec différente utilisation suivant le niveau de l'utilisateur.
 Created:  2020-04-22T14:33:03.043Z
 Modified: !date!
 #}
@@ -10,9 +10,11 @@ Modified: !date!
 {% block title %} {{ title|title }} {% endblock %}
 
 {% block content %} 
+ {% include 'NavBar.twig' only %}
+<div class="text-center">
+<h1 class="title">{{ title|upper }}</h1>
+</div>
 <div class="container">
-<h1>{{ title }}</h1>
-
 <table class="table table-bordered">
   <thead>
     <tr>
@@ -28,29 +30,28 @@ Modified: !date!
   <tbody>
   {% for tvx in tvx %}  
     <tr>      
-      <td >{{ tvx.id }}</td>      
+      <td>{{ tvx.id }}</td>      
       <td>{{ tvx.descriptions }}</td>
       <td>{{ tvx.urgence }}</td>
       <td>{{ tvx.nBatiment }}
       <td>{{ tvx.nom }}</td>
       <td>{{ tvx.date_demande|format_datetime(locale='fr') }}</td> 
       <td>  
-     
-       <a href="voir={{ tvx.id }}"><i class="fas fa-eye fa-2x"></a></i> |
-        {% if 0 in session.niveau and planif > 1 %} 
-      <a href='planifier-travaux={{ tvx.id }} '><i class="far fa-calendar-alt fa-2x"></a></i> |
-      {% endif %}
-      {% if 0 in session.niveau or tvx.id_demandeur == session.id_user and planif > 1 %} 
-      <a href='edit-travaux={{ tvx.id }} '><i class="far fa-edit fa-2x"></a></i> |
-      {% endif %}
-      {% if 0 in session.niveau or tvx.id_demandeur == session.id_user %}      
-      <a href="supprimer-travaux={{ tvx.id }}"><i class="fas fa-trash-alt fa-2x"></a></i>                  
-      {% endif %}            
-     
+     <div class="row">                  
+        <a class="iTvxList col-md-2" href='voir={{ tvx.id }}'><i class="fas fa-eye fa-2x"></i></a>              {% if session.niveau < 2 and planif > 1 %} 
+        <a class="iTvxList col-md-2" href='planifier-travaux={{ tvx.id }}'><i class="fas fa-calendar-alt fa-2x"></i></a>    
+        {% endif %}     
+        {% if (tvx.id_demandeur == session.id_user and session.niveau > 2) and planif > 1 %} 
+        <a class="iTvxList col-md-2" href='edit-travaux={{ tvx.id }}'><i class="fas fa-edit fa-2x"></i></a>      
+        {% endif %}
+        {% if  session.niveau < 2 or tvx.id_demandeur == session.id_user %}            
+        <a class="iTvxList col-md-2" href="supprimer-travaux={{ tvx.id }}"><i class=" fas fa-trash-alt fa-2x"></i></a>                  
+        {% endif %}            
+    </div>
       </td>
     <tr>
    {% endfor %}    
   </tbody>
-  </table>
+</table>
   
 {% endblock %}

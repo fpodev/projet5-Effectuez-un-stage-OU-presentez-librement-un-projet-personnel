@@ -1,35 +1,45 @@
-
+{#
+Author: fpodev (fpodev@gmx.fr)
+UserList.twig (c) 2020
+Desc: Listes des utilisateurs
+Created:  2020-04-26T16:01:01.057Z
+Modified: !date!
+#}
 {% extends "Head.twig" %}
 
 {% block title %}Liste utilisateurs{% endblock %}
 
-{% block content %}      
+{% block content %} 
+ {% include 'NavBar.twig' only %}
+<div class="text-center">
+    <h1>Voici la liste des {{ title }} </h1>
+</div>     
 <div class="container">    
-    <table>
+    <table class="table table-bordered"> 
         <tr>
             <th>Nom</th>
             <th>Prénom</th>
-            <th>email</th>
+            <th class="user_responsive">email</th>
             <th>lieu</th>
             <th>niveau</th>
-            <th>Ajouter par:</th>
+            <th class="user_responsive">Ajouter par:</th>
             <th>Action</th>
         </tr>    
-{% for user in userList  %}
+        {% for user in userList  %}
         <tr>
             <td> {{ user.nom }} </td>
             <td> {{ user.prenom }} </td>
-            <td> {{ user.email }} </td>
+            <td class="user_responsive"> {{ user.email }} </td>
             <td> {{ user.lieu }} </td>
             <td> {{ user.niveau }} </td>
-            <td> {{ user.userAdd }} </td>
+            <td class="user_responsive"> {{ user.userAdd }} </td>
             <td>
-              <a href='modifier={{ user.id}} '><i class="fas fa-user-edit fa-2x"></a></i> | 
-              <a href="supprimer={{ user.id }}"><i class="fas fa-user-slash fa-2x"></a></i>
+                <a href='modifier={{ user.id}} '><i class="fas fa-user-edit fa-2x"></a></i> | 
+                <a href="supprimer-utilisateur={{ user.id }}"><i class="fas fa-user-slash fa-2x"></a></i>
             </td>
         </tr>
-{% endfor %}
+        {% endfor %}
     </table>
-   <a href='Ajouter-Utilisateur'><i class="fas fa-user-plus fa-2x"></i></a>
+    <a href='Ajouter-Utilisateur'><i class="fas fa-user-plus fa-2x"></i></a>
 </div>
 {% endblock %}    

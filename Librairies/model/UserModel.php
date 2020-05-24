@@ -1,6 +1,12 @@
 <?php
 namespace App\model;
-
+/*
+Author: fpodev (fpodev@gmx.fr)
+UserModel.php (c) 2020
+Desc: Liaison avec la table User de la Bdd.
+Created:  2020-04-13T14:03:28.788Z
+Modified: !date!
+*/
 use PDO;
 use App\Objet\User;
 use RuntimeException;
@@ -34,23 +40,27 @@ class UserModel
     }
     public function listUser()
     {
-        $sql = 'SELECT * FROM User ORDER BY id DESC';
+   
+        $q = $this->db->query('SELECT User.id, User.nom, prenom, email, niveau, userAdd, Lieu.nom AS "lieu" FROM User INNER JOIN Lieu ON User.id_lieu = Lieu.id ORDER BY id DESC');
 
-        $q = $this->db->query($sql);
+        $q->execute();
 
-        $q->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'App\Objet\User');
+        $q->setFetchMode(PDO::FETCH_ASSOC);
     
         $userList = $q->fetchAll();
 
         $q->closeCursor();
 
         return $userList;
-    }
+    }    
     public function listTech($id)
-    {        
-        $q = $this->db->query('SELECT nom, prenom, id FROM User WHERE id_lieu = '.$id.' AND niveau = "2" ');
+     {      
+        
+        $q = $this->db->prepare('SELECT nom, prenom, id FROM User WHERE id_lieu = :id AND niveau = "2" ');
 
-      //  $q->bindValue(':id',$id , PDO::PARAM_INT);
+        $q->bindParam(':id',$id , PDO::PARAM_INT);
+
+        $q->execute();
 
         $q->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'App\Objet\User');
     
@@ -65,6 +75,7 @@ class UserModel
         $q = $this->db->prepare('SELECT * FROM User WHERE id =:id');
 
         $q->bindValue(':id', $id, PDO::PARAM_INT);
+        
         $q->execute();   
         
         $q->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'App\Objet\User');
@@ -77,11 +88,11 @@ class UserModel
     }
     protected function update(User $user)
     {
-        $q = $this->db->prepare('UPDATE User SET nom = :nom, email = :email, lieu = :lieu, niveau = :niveau, userModif = :userModif WHERE id = :id');
+        $q = $this->db->prepare('UPDATE User SET nom = :nom, email = :email, id_lieu = :lieu, niveau = :niveau, userModif = :userModif WHERE id = :id');
 
         $q->bindValue(':nom', $user->nom(), PDO::PARAM_STR);
         $q->bindValue(':email', $user->email(), PDO::PARAM_STR);       
-        $q->bindValue(':lieu', $user->lieu(), PDO::PARAM_STR );
+        $q->bindValue(':lieu', $user->lieu(), PDO::PARAM_INT );
         $q->bindValue(':niveau', $user->niveau(), PDO::PARAM_INT);
         $q->bindValue(':userModif', $user->userModif(),PDO::PARAM_STR);
         $q->bindValue(':id', $user->id(), PDO::PARAM_INT);
@@ -115,7 +126,7 @@ class UserModel
     }    
     public function nouveauPass($identifiant){
         
-        $pass_hache = password_hash($_POST['pass2'], PASSWORD_DEFAULT);
+        $pass_hache = password_hash($_POST['newPass'], PASSWORD_DEFAULT);
          
         $q = $this->db->prepare('UPDATE User SET pwd = :pass WHERE email = :identifiant');       
         

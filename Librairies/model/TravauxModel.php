@@ -2,7 +2,8 @@
 /*
 Author: fpodev (fpodev@gmx.fr)
 TravauxModel.php (c) 2020
-Desc: description
+Desc: liaison avec la table travaux de la Bdd,
+      gére aussi les données retournées aux niveau 2.
 Created:  2020-04-13T15:10:34.230Z
 Modified: !date!
 */
@@ -101,7 +102,7 @@ class TravauxModel{
 }
     public function uniqueTravaux($id)
     {
-        $q = $this->db->query('SELECT  Travaux.id, Batiment.id AS idBatiment, Materiel.id AS idMateriel, Secteur.id AS idSecteur, demandeur.id AS idDemandeur, Travaux.id AS nTravaux, descriptions, detail, urgence, date_demande, date_prevu, date_debut, date_fin, externe, Lieu.id AS "nLieu", Lieu.nom AS "lieu", Batiment.nom AS "batiment", Materiel.nom AS "materiel", Secteur.nom AS "secteur", demandeur.email, technicien.id AS techId, technicien.nom AS techNom 
+        $q = $this->db->prepare('SELECT  Travaux.id, Batiment.id AS idBatiment, Materiel.id AS idMateriel, Secteur.id AS idSecteur, demandeur.id AS idDemandeur, Travaux.id AS nTravaux, descriptions, detail, urgence, date_demande, date_prevu, date_debut, date_fin, externe, Lieu.id AS "nLieu", Lieu.nom AS "lieu", Batiment.nom AS "batiment", Materiel.nom AS "materiel", Secteur.nom AS "secteur", demandeur.email, technicien.id AS techId, technicien.nom AS techNom 
                                FROM Travaux  
                                INNER JOIN Lieu                               
                                ON Travaux.id_lieu = Lieu.id                              
@@ -115,7 +116,9 @@ class TravauxModel{
                                ON Travaux.id_demandeur = demandeur.id  
                                LEFT JOIN User as technicien
                                ON Travaux.id_technicien = technicien.id                                                                                                    
-                               WHERE Travaux.id = '.$id.'');                                 
+                               WHERE Travaux.id = :id');
+
+        $q->bindValue(':id', (int) $id, PDO::PARAM_INT);                                                    
                                
         $q->execute();   
         
@@ -132,6 +135,7 @@ class TravauxModel{
         $q = $this->db->prepare('UPDATE Travaux SET id_technicien = :id_technicien, date_prevu = :date_prevu, 
                                 date_debut = :date_debut, date_fin = :date_fin, externe = :externe, 
                                 descriptions = :descriptions, detail = :detail WHERE id = :id');
+                                
         $q->bindValue(':descriptions', $travaux->descriptions(), PDO::PARAM_STR); 
         $q->bindValue(':detail', $travaux->detail(), PDO::PARAM_STR) ; 
         $q->bindValue(':id_technicien', $travaux->id_technicien(), PDO::PARAM_INT);    
@@ -147,7 +151,8 @@ class TravauxModel{
     {
         $q = $this->db->prepare('UPDATE Travaux SET date_debut = :date_debut
                                 WHERE id = :id');         
-        $q->bindValue(':date_debut', $travaux->date_debut());                          
+       
+       $q->bindValue(':date_debut', $travaux->date_debut());                          
         $q->bindValue(':id', $travaux->id(), PDO::PARAM_INT);
 
         $q->execute(); 

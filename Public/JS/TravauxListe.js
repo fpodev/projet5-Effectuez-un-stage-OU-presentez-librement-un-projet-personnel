@@ -1,7 +1,7 @@
 /*
 Author: fpodev (fpodev@gmx.fr)
 TravauxListe.js (c) 2020
-Desc: description
+Desc: utilisation API pour les utilisateurs de niveau 2(technicien)
 Created:  2020-04-26T15:11:26.536Z
 Modified: !date!
 */
@@ -14,13 +14,11 @@ class TravauxListe{
         this.return();               
     }
 listeTravaux(){
-
-    ajaxGet(this.urlGet, function(response){
-        
-        let data = JSON.parse(response); 
-        let travaux = data['travaux'];              
-                      
-        travaux.forEach(function(value){            
+    ajaxGet(this.urlGet, function(response){        
+        let data = JSON.parse(response);         
+        let travaux = data['travaux'];                   
+        travaux.forEach(function(value){  
+        //construction du tableau et entrées des valeurs retournées par l'API         
            let row = tableau.insertRow(0);
            let idElt = row.insertCell(0);
            idElt.textContent = value.id;
@@ -38,7 +36,7 @@ listeTravaux(){
             let form = document.createElement("form");                                                               
             let id = document.createElement("input");
             id.className = "masque";
-            id.type = "text";
+            id.type = "hidden";
             id.value = value.id;                          
             let link = document.createElement("button");
             link.type = "submit";                                                
@@ -47,14 +45,15 @@ listeTravaux(){
                 document.getElementById("description").textContent = value.descriptions;
                 document.getElementById("detail").textContent = value.detail;
                 document.getElementById("demandeur").textContent = value.email;
-                document.getElementById("externe").textContent = value.externe;
-                //document.getElementById("postId").value = id.value;               
+                document.getElementById("externe").textContent = value.externe;                         
                 document.title = "Détail de la demande de travaux";
                 document.getElementById("table").style.display ="none";
                 document.getElementById("blocDetail").style.display ="block";                
                 document.getElementById("test").appendChild(form);
                 form.appendChild(this.retour);
-            }.bind(this));                                 
+            }.bind(this));
+        /*Insére le bouton "start" dans le tableau pour démarrer les travaux au clic, envoie la date
+        **a la Bdd par l'API puis change en bouton "stop".*/                                     
             if(value.date_debut != null){
                    id.name ='id_fin';
                    link.className = "btn btn-danger";  
@@ -64,7 +63,9 @@ listeTravaux(){
                            id_fin: form.elements.id_fin.value   
                     }                                                                            
                  ajaxPost(this.urlPost, fin, function(response){                   
-                 
+                    let data = JSON.parse(response); 
+                    let success = data['valeur'];
+                    alert(success);
                  });                 
                 }.bind(this)); 
             }
@@ -75,8 +76,7 @@ listeTravaux(){
                 form.addEventListener("submit", function(){                
                     let debut = {
                            id_debut: form.elements.id_debut.value   
-                    }  
-                                                                                           
+                    }                                                                                             
                  ajaxPost(this.urlPost, debut, function(response){                    
                      let data = JSON.parse(response); 
                      let success = data['valeur'];
