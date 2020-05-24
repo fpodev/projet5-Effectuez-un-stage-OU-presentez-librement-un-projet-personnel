@@ -1,18 +1,19 @@
 {#
 Author: fpodev (fpodev@gmx.fr)
 InfoTravaux.twig (c) 2020
-Desc: description
+Desc: Template pour les infos travaux avec l'ajout "mes travaux" pour les utilisateurs de niveau 2
+      sur la page d'accueil
 Created:  2020-04-29T16:37:43.450Z
 Modified: !date!
 #}
-<div class="col-md-4">  
-            <img src= "Public/img/Infotravaux.jpg">
-            <a href="Liste-nouveaux-travaux"><p>Nouvelles demandes: <span class="new">{{ count.countNew }}</span></p></a>               
-            <a href="Liste-travaux-planifiés"><p>Travaux planifiés: <span class="enCours">{{ count.countPlanif }}</span></p></a>
-            {% if session.niveau == '2' %}           
-            <a href="Mes-travaux-planifiés"<p>Mes travaux planifiés: <span class="enCours">{{ count.countUser }}</span></p></a>
-            {% endif %}
-            <div class="caption">
-                <p>Les infos travaux</p>                
-            </div>
-        </div>
+<div class="img" class="col-md-4">  
+    <img src= "Public/img/Infotravaux.jpg">
+    <a href="Liste-nouveaux-travaux"><p>Nouvelles demandes: <span class="new">{{ count.countNew }}</span></p></a>               
+    <a href="Liste-travaux-planifiés"><p>Travaux planifiés: <span class="enCours">{{ count.countPlanif }}</span></p></a>
+    {% if session.niveau == '2' %}           
+        <a href="Mes-travaux-planifiés"<p>Mes travaux planifiés: <span class="enCours">{{ count.countUser }}</span></p></a>
+    {% endif %}
+    <div class="caption">
+        <p>Les infos travaux</p>                
+    </div>
+</div>
