@@ -1,32 +1,26 @@
 <?php
 namespace App\Routeur;
-
-require 'vendor/autoload.php';
+/*
+Author: fpodev (fpodev@gmx.fr)
+Routeur.php (c) 2020
+Desc: Gestion des routes
+Created:  2020-04-14T08:10:34.130Z
+Modified: !date!
+*/
 
 
 use Exception;
-use Twig\Environment;
 use App\Routeur\Route;
-use Twig\Loader\FilesystemLoader;
-use App\Controller\UserController;
-
 class Routeur{
-
-     private $ctrlUser; 
+    
      private $routes=[];
      private $namedRoutes = [];
      private $url;      
 
     public function __construct($url)
-    {
-       /* $this->ctrlUser = new UserController();
-        $this->loader = new \Twig\Loader\FilesystemLoader(['Librairies/View', 'Librairies/Templates']);
-        $this->twig = new \Twig\Environment($this->loader, ['debug' => true,]); 
-        $this->twig->addExtension(new \Twig\Extension\DebugExtension());*/
-        session_start(); 
-        
+    {                    
         $this->url = $url;
-      }
+    }
       
     public function get($path, $callable, $name = null){
         return $this->add($path, $callable, $name, 'GET');

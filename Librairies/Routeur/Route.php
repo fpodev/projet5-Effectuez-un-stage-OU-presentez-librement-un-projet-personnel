@@ -1,6 +1,12 @@
 <?php
 namespace App\Routeur;
-
+/*
+Author: fpodev (fpodev@gmx.fr)
+Route.php (c) 2020
+Desc: Contrôle les routes pour faire un appel au contrôller
+Created:  2020-04-14T08:10:34.130Z
+Modified: !date!
+*/
 use App\Controller\UserControler;
 
 class Route{
