@@ -1,10 +1,16 @@
 <?php
 namespace App\Objet;
-
+/*
+Author: fpodev (fpodev@gmx.fr)
+ExtendsObjet.php (c) 2020
+Desc: Servant de base pour les objets.
+Created:  2020-04-13T14:03:28.788Z
+Modified: !date!
+*/
 class ExtendsObjet{
 
    protected $erreurs = [];
-    //protected $nom;
+    protected $nom;
     protected $id;
 
     const NOM_INVALIDE = 1;
