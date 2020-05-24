@@ -17,13 +17,10 @@ Modified: !date!
         
         <title>{% block title %}  {% endblock %}</title>    
 </head>
-<body>   
-     {% include 'Header.twig' only %}
+<body>     
     <div id="content"> {% block content %} {% endblock %} </div>    
-       
-  <script type="text/javascript" src="Public/JS/Ajax.js"></script>
-  <script type="text/javascript" src="Public/JS/TravauxListe.js"></script>
-  <script type="text/javascript" src="Public/JS/Main.js"></script> 
+  
+{% include 'Footer.twig' only %} 
 </body>
 </html>
 
