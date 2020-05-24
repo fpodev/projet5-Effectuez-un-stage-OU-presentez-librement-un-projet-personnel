@@ -1,0 +1,18 @@
+{#
+Author: fpodev (fpodev@gmx.fr)
+404.twig (c) 2020
+Desc: Page d'erreur 404
+Created:  2020-05-21T14:52:00.688Z
+Modified: !date!
+#}
+{% extends "Head.twig" %}
+
+{% block content %} 
+    <div class="text-center">
+    <img src= "Public/img/404.jpg">
+     <form>
+        <input type = "button" value = "Retour page précédente"  onclick = "history.go(-1)">
+        <a href="Accueil" target="self"><input type = "button" value = "Retour à l'accueil"></a>        
+    </form> 
+    </div>
+{% endblock %}    
