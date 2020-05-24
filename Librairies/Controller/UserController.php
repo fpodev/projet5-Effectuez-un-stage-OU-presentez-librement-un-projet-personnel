@@ -1,14 +1,19 @@
 <?php
 namespace App\Controller;
-
-
+/*
+Author: fpodev (fpodev@gmx.fr)
+UserController.php (c) 2020
+Desc: script de controle pour les utilisateurs
+Created:  2020-05-24T14:03:14.857Z
+Modified: !date!
+*/
 use App\Objet\User;
-use App\View\Render;
 use App\Mail\SendMail;
 use App\model\LieuModel;
 use App\model\UserModel;
-use App\Objet\ConnexionDb;
 use App\model\TravauxModel;
+use App\ConnexionBDD\ConnexionDb;
+use App\Controller\VueController;
 
 class UserController{
 
@@ -20,37 +25,41 @@ class UserController{
         $db = ConnexionDb::getPDO();
         $this->user = new UserModel($db);  
         $this->send = new SendMail();   
-        $this->render = new Render();  
+        $this->render = new VueController();  
         $this->ville = new LieuModel($db); 
         $this->travaux = new TravauxModel($db);
     }
 
-    public function addUser(){       
+    public function addUser(){ 
+        //Création d'un mot de passe aléatoire.      
         $pass = substr(str_shuffle(
-            'abcdefghijklmnopqrstuvwxyzABCEFGHIJKLMNOPQRSTUVWXYZ0123456789'),1, 10); 
-       
+            'abcdefghijklmnopqrstuvwxyzABCEFGHIJKLMNOPQRSTUVWXYZ0123456789'),1, 10);
+        
+        $nom = htmlspecialchars($_POST['nom']);
+        $prenom = htmlspecialchars($_POST['prenom']);
+        $email = htmlspecialchars($_POST['email']);
+        $lieu = htmlspecialchars($_POST['lieu']);
+        $niveau = htmlspecialchars($_POST['niveau']);
+
         $user = new User(
             [
-                'nom' => $_POST['nom'],
-                'prenom' => $_POST['prenom'],
-                'email' => $_POST['email'],
-                'lieu' => $_POST['lieu'],                
+                'nom' => $nom,
+                'prenom' => $prenom,
+                'email' => $email,
+                'lieu' => $lieu,
+                //hashe le mot de passe pour plus de sécurité                
                 'pwd' => password_hash($pass, PASSWORD_DEFAULT),
-                'niveau' => $_POST['niveau'],
+                'niveau' => $niveau,
                 'userAdd' => $_SESSION['identifiant'],
                 'userModif' => $_SESSION['identifiant']              
-            ]
-            );
-        if(isset($_POST['id']))
-        {
-            $user->setId($_POST['id']);
-        }
+            ]); 
+
         if($user->isValid())
         {
             $this->user->save($user);
-
-            $prenom = $_POST['prenom'];
-            $destinataire = $_POST['email'];
+            //envoie d'un mail au nouvel utilisateur pour lui indiqué sont identifiant et mot de passe.
+            $prenom = $prenom;
+            $destinataire = $email;
             $sujet = 'Création compte GMAO';
             ob_start();
             include ('Librairies/Mail/userView.php');
@@ -66,38 +75,73 @@ class UserController{
             
                 $this->render->view('CreateUser', ['user' => $erreurs]);                                                      
         }           
-    }    
-    public function listUser(){
-            $userList = $this->user->listUser();                             
+    }  
+    public function updateUser() {
 
-            $this->render->view('UserList', ['userList' => $userList]); 
-    }    
-    public function changeUser($id){                
-            if(preg_match("#[0-9]#" , $id))
-            {
-                $user = $this->user->uniqueUser($id);
-                
-                $this->render->view('CreateUser', ['user' => $user]); 
-                            
-            } 
-            else{
-                echo 'erreur 404';
-            }           
-    }
-    public function userPage(){
+        $nom = htmlspecialchars($_POST['nom']);
+        $prenom = htmlspecialchars($_POST['prenom']);
+        $email = htmlspecialchars($_POST['email']);
+        $lieu = htmlspecialchars($_POST['lieu']);
+        $niveau = htmlspecialchars($_POST['niveau']);
+
+        $user = new User(
+            [
+                'nom' => $nom,
+                'prenom' => $prenom,
+                'email' => $email,
+                'lieu' => $lieu,                             
+                'niveau' => $niveau,                
+                'userModif' => $_SESSION['identifiant']              
+            ]
+            );
+        if(isset($_POST['id']))
+        {
+            $user->setId($_POST['id']);
+        }
+       
+        if($user->isValid())
+        {      
+            $this->user->save($user);
+
+            $this->listUser(); 
+        }
+        else
+        {
+                $erreurs = $user->erreurs();                     
             
-            $this->render->view('CreateUser');          
+                $this->render->view('CreateUser', ['user' => $erreurs]);                                                      
+        }           
+    } 
+    public function listUser(){
+            $title = "utilisateurs";
+            $userList = $this->user->listUser();                             
+            $this->render->view('UserList', ['userList' => $userList, 'title' => $title]); 
+    }    
+    public function uniqueUser($id){  
+        $user = $this->verif($id);
+        if($user == true){            
+            $title = "utilisateurs";
+            $this->render->view('CreateUser', ['user' => $user, 'title' => $title]);  
+        }     
+    }   
+    public function CreatePage(){ 
+            $title = "utilisateur";           
+            $this->render->view('CreateUser', ['title'=> $title]);          
     }
     public function deleteUser($id){
-        
+        $user = $this->verif($id);
+        if($user == true){
             $this->user->delete($id);
             $this->listUser();
+        }        
     }
     public function connexion(){ 
-                      
-            $resultat = $this->user->connexion(($_POST['identifiant']));
-                                                
-            $okPass = password_verify($_POST['pass'], $resultat['pwd']);        
+            $identifiant = htmlspecialchars($_POST['identifiant']); 
+            $pass = htmlspecialchars($_POST['pass']);   
+
+            $resultat = $this->user->connexion($identifiant);
+                                        
+            $okPass = password_verify($pass, $resultat['pwd']);        
             if(!$resultat || !$okPass)       
             {
                 echo 'Mauvais identifiant ou mot de passe';
@@ -107,30 +151,35 @@ class UserController{
             {   
                 $ville = $this->ville->uniqueLieu($resultat['id_lieu']);               
 
-                $_SESSION['identifiant'] = $_POST['identifiant'];             
+                $_SESSION['identifiant'] = $identifiant;             
                 $_SESSION['cookie'] = $_COOKIE;                                      
                 $_SESSION['prenom'] = $resultat['prenom'];
                 $_SESSION['lieuId'] = $resultat['id_lieu'];
                 $_SESSION['lieu'] = $ville->nom();
                 $_SESSION['niveau'] = $resultat['niveau'];
-                $_SESSION['id_user'] = $resultat['id'];             
-                                
+                $_SESSION['id_user'] = $resultat['id'];                 
+              
                 $this->home(); 
             }
         }                                           
-    public function ChangePass(){                                        
-            $resultat = $this->mLogin->connexion($_SESSION["identifiant"]);                                                
-            $okPass = password_verify($_POST['pass1'], $resultat['pass']);        
+    public function changePass(){  
+         $actuelPass = htmlspecialchars($_POST['passActuel']); 
+         $passNew = htmlspecialchars($_POST['passNew']);
+         $passConfirm = htmlspecialchars($_POST['passConfirm']);
+         
+            $resultat = $this->user->connexion($_SESSION["identifiant"]);
+
+            $okPass = password_verify($actuelPass, $resultat['pwd']);        
                 if(!$resultat || !$okPass)
                 {
                     echo 'erreur ancien mot de passe';
                 }
-                elseif($_POST['pass2'] === $_POST['pass3'])                     
+                elseif($passNew === $passConfirm)                     
                 {               
-                    $this->user->nouveauPass($_SESSION['identifiant']);
+                    $this->user->nouveauPass($_SESSION['identifiant']);                    
                     
-                       
-                    include('Librairies/View/LoginView.php'); 
+                    session_destroy();
+                    $this->render->view('home'); 
                 }
                 else
                 {
@@ -139,10 +188,10 @@ class UserController{
                 }    
     }  
     public function home(){ 
-       if(empty($_SESSION['niveau']) ){
+       if(empty($_SESSION['niveau']) || $_SESSION['niveau'] != '2'){
             $userTvx = 'null';
-       }       
-        elseif($_SESSION['niveau'] == '2')
+       }           
+        else
          {                  
         $userTvx = $this->travaux->countUser($_SESSION['id_user']); 
          };                        
@@ -152,5 +201,30 @@ class UserController{
          
             $this->render->view('Home', ['countNew'=> $countNew, 'countPlanif' => $countPlanif, 'countUser' => $userTvx]);   
                 
-        }       
+        } 
+    public function changePage(){
+        $this->render->view('ChangePass');
+    } 
+    public function Destroy(){
+        session_destroy();
+        $this->render->view('Login');
+    } 
+    /*verification que l'élement demandé via un $id est bien un nombre
+    ** et existe bien dans la BDD avant de retourné ses valeurs*/
+    public function Verif($id){    
+        $idValid =  htmlspecialchars($id);                                           
+        if (preg_match("#[0-9]#", $idValid))
+        {
+            $user = $this->user->uniqueUser($idValid);   
+            if($user != false){
+                return $user;       
+            }
+            else{
+                $this->render->view('404');  
+            }                        
+        } 
+        else{                             
+            $this->render->view('404');                       
+        }           
+    }    
 }

@@ -8,12 +8,11 @@ Modified: !date!
 */
 namespace App\Controller;
 
-use App\View\Render;
 use App\Objet\Secteur;
-use App\Objet\ConnexionDb;
-use App\model\BatimentModel;
+use App\ConnexionBDD\ConnexionDb;
 use App\model\SecteurModel;
-use Twig\Extension\MyExtends;
+use App\Controller\VueController;
+use App\Controller\BatimentController;
 
 class SecteurController { 
     
@@ -23,49 +22,99 @@ class SecteurController {
     public function __construct(){
         $db = ConnexionDb::getPDO();
         $this->secteur = new SecteurModel($db);
-        $this->render = new Render();
-        $this->batiment = new BatimentModel($db);                       
+        $this->render = new VueController();
+        $this->batiment = new BatimentController($db);                       
     }
-    public function secteurList($id){
-        if(preg_match("#[0-9]#" , $id))
-            {     
-                $title = 'secteurs'; 
-                $batiment = $this->batiment->uniqueBatiment($id);
+    public function secteurList($id = null, $erreur = null){
+        if($id === null){
+            $id = $_SESSION['id_batiment'];
+        }        
+                $batiment = $this->batiment->verif($id);
+                if($batiment == true){                  
+                $title = 'secteurs';                 
                 $valueList = $this->secteur->secteurList($id);
                 $_SESSION['batiment'] = $batiment->nom();
+                $_SESSION['id_batiment'] = $batiment->id();
 
-                $this->render->view('ActifList', ['value' => $valueList, 'title' => $title]);                         
-            } 
-            else{
-                echo 'erreur 404';
-            }                      
+                $this->render->view('ActifList', ['value' => $valueList, 'title' => $title, 'erreur' => $erreur]);                         
+            }             
     }
-    public function addSecteur(){                   
+    public function addSecteur(){   
+        $nom = htmlspecialchars($_POST['secteurs']);                
         $secteur = new Secteur(
             [
-                'nom' => $_POST['name'], 
-                'id_batiment'  => $_POST['id_batiment']                                              
+                'nom' => $nom, 
+                'id_batiment'  => $_SESSION['id_batiment']                                              
+            ]);            
+            if($secteur->isValid())
+            {
+                $this->secteur->save($secteur);                
+                
+                $this->secteurList($_SESSION['id_batiment']); 
+            }
+            else
+            {
+                    $erreurs = $secteur->erreurs();                     
+                
+                    $this->secteurList($_SESSION['id_batiment'], $erreurs);                                                      
+            }               
+    }
+    public function uniqueSecteur($id, $erreur = null){
+            $value = $this->verif($id);
+            if($value == true){
+                $title = 'Secteurs';
+                $this->render->view('ActifList',['value' => $value, 'title' => $title, 'erreur' => $erreur]); 
+            }                  
+    }
+    public function updateSecteur(){
+        $value = htmlspecialchars($_POST['Secteurs']);                 
+        $secteur = new secteur(
+            [
+                'nom' => $value,                                                 
             ]);
 
             if(isset($_POST['id']))
             {
                 $secteur->setId($_POST['id']);
             }
-            if($secteur->isValid())
+            if($secteur->isValidUpdate())
             {
                 $this->secteur->save($secteur);                
                 
-                $this->secteurList($_POST['id_lieu']); 
+                $this->secteurList($_SESSION['id_batiment']); 
             }
             else
             {
-                    $erreurs = $secteur->erreurs();                     
+                $erreurs = $secteur->erreurs();                     
                 
-                    $this->render->view('CreateSite', ['secteur' => $erreurs]);                                                      
-            }               
+                $this->uniqueSecteur($_SESSION['id_batiment'], $erreurs);
+            }                          
     }
-    public function sitePage(){
-        $this->render->view('CreateSite');  
-    }         
+    public function supprimeSecteur($id){
+        $secteur = $this->verif($id);
+        if($secteur == true){
+            $this->secteur->delete($id);    
+            $this->secteurList($_SESSION['id_batiment']); 
+        }                                 
+    } 
+    /*verification que l'élement demandé via un $id est bien un nombre
+    ** et existe bien dans la BDD avant de retourné ses valeurs*/  
+    public function Verif($id){    
+        $idValid =  htmlspecialchars($id);           
+                                      
+        if (preg_match("#[0-9]#", $idValid))
+        {
+            $secteur = $this->secteur->uniqueSecteur($idValid);        
+            if($secteur != false){
+                return $secteur; 
+            }
+            else{
+                $this->render->view('404');
+            }                               
+        } 
+        else{                             
+            $this->render->view('404');                        
+        }           
+    }    
 }
 

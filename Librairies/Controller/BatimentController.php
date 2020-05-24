@@ -2,18 +2,17 @@
 /*
 Author: fpodev (fpodev@gmx.fr)
 BatimentController.php (c) 2020
-Desc: description
+Desc: script controle des batiments
 Created:  2020-04-14T08:10:34.130Z
 Modified: !date!
 */
 namespace App\Controller;
 
-use App\View\Render;
 use App\Objet\Batiment;
-use App\Objet\ConnexionDb;
+use App\ConnexionBDD\ConnexionDb;
 use App\model\BatimentModel;
-use App\model\LieuModel;
-use Twig\Extension\MyExtends;
+use App\Controller\VueController;
+use App\Controller\LieuController;
 
 class BatimentController { 
     
@@ -23,50 +22,105 @@ class BatimentController {
     public function __construct(){
         $db = ConnexionDb::getPDO();
         $this->batiment = new BatimentModel($db);
-        $this->render = new Render();
-        $this->ville = new LieuModel($db);                       
+        $this->render = new VueController();
+        $this->ville = new LieuController();                       
     }
-    public function batimentList($id = null){
+    public function batimentList($id = null, $erreur = null){
         if($id == null){
             $id = $_SESSION['lieuId'];
-        }        
-        if(preg_match("#[0-9]#" , $id))
+       }       
+            //Renvoie $id à la fonction verif, celle-ci renverra une erreur 404 si il y n'y as pas de corespondance.                    
+            $ville = $this->ville->verif($id);
+            if($ville == true)
             {
-                $title = 'bâtiments';
-                $ville = $this->ville->uniqueLieu($id);             
-                $valueList = $this->batiment->batimentList($id);                         
-                $_SESSION['lieuVue'] = $ville->nom();                      
-                $this->render->view('ActifList', ['value' => $valueList, 'title' => $title]);                            
-            } 
-            else{
-                echo 'erreur 404';
-            }                      
+                $valueList = $this->batiment->batimentList($id);
+                $title = 'bâtiments';                                                                  
+                $_SESSION['lieuVue'] = $ville->nom();
+                $_SESSION['id_lieu'] = $ville->id();                     
+                $this->render->view('ActifList', ['value' => $valueList, 'title' => $title, 'erreur' => $erreur]);                            
+            }                       
     }  
-    public function addSite(){                   
+    public function addBatiment(){   
+        $nom = htmlspecialchars($_POST['bâtiments']);                
         $batiment = new Batiment(
             [
-                'nom' => $_POST['name'], 
-                'id_lieu'  => $_POST['id_lieu']                                              
+                'nom' => $nom, 
+                'id_lieu'  => $_SESSION['id_lieu']                                             
+            ]);
+                
+            if(isset($_POST['id']))
+            {
+                $batiment->setId($_POST['id']);
+            }
+            if($batiment->isValid())
+            { 
+                $this->batiment->save($batiment);                
+                
+                $this->batimentList($_SESSION['id_lieu']); 
+            }
+            else
+            {
+                    $erreurs = $batiment->erreurs();                     
+                    
+                $this->batimentList($_SESSION['id_lieu'], $erreurs);                                                      
+            }               
+    } 
+    public function uniqueBatiment($id, $erreur = null){        
+            $value = $this->verif($id);
+            if($value == true){
+                $title = 'bâtiments';
+                $this->render->view('ActifList',['value' => $value, 'title' => $title, 'erreur'=>$erreur]);
+            }                
+    }
+    public function updateBatiment(){
+        $value = htmlspecialchars($_POST['bâtiments']);                 
+        $batiment = new Batiment(
+            [
+                'nom' => $value,                                                 
             ]);
 
             if(isset($_POST['id']))
             {
                 $batiment->setId($_POST['id']);
             }
-            if($batiment->isValid())
+            if($batiment->isValidUpdate())
             {
                 $this->batiment->save($batiment);                
                 
-                $this->batimentList($_POST['id_lieu']); 
-            }
+                $this->batimentList($_SESSION['id_lieu']); 
+            } 
             else
             {
-                    $erreurs = $batiment->erreurs();                     
-                
-                    $this->render->view('CreateSite', ['batiment' => $erreurs]);                                                      
+                $erreurs = $batiment->erreurs();                     
+                    
+                $this->uniqueBatiment($_POST['id'], $erreurs);                                                      
             }               
+                           
     }
-    public function sitePage(){
-        $this->render->view('CreateSite');  
-    }         
+    public function supprimeBatiment($id){
+       $batiment = $this->verif($id);
+       if($batiment == true){
+        $this->batiment->delete($id);   
+        $this->batimentList();  
+       }         
+    } 
+    
+    public function Verif($id){    
+        $idValid =  htmlspecialchars($id);           
+        //S'assure que l'$id est bien un nombre avant de faire la requéte dans la BDD sinon 404.                              
+        if (preg_match("#[0-9]#", $idValid))
+        {
+            //Vérifie que l'entrée existe bien dans la BDD et renvoi les valeurs, sinon 404.
+            $batiment = $this->batiment->uniqueBatiment($idValid);        
+            if($batiment != false){
+                return $batiment; 
+            }
+            else{
+                $this->render->view('404');  
+            }                                 
+        } 
+        else{                             
+            $this->render->view('404');                     
+        }           
+    }        
 }
