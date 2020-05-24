@@ -2,6 +2,7 @@
 Author: fpodev (fpodev@gmx.fr)
 ActifList.twig (c) 2020
 Desc: Affiche la liste des villes || bâtiments || secteurs || matériels
+      Et permet l'ajout ou la modification d'un actif
 Created:  2020-04-14T08:01:29.787Z
 Modified: !date!
 #}
@@ -9,43 +10,71 @@ Modified: !date!
 
 {% block title %}Liste {{ title }} {% endblock %}
 
-{% block content %}  
-    
+{% block content %} 
+{% include 'NavBar.twig' only %} 
+<div id="actifBlock">
     {% if title == "bâtiments" %} 
-    <p> Ville: {{ session.lieuVue|title }} </p> 
+        <p> Ville: {{ session.lieuVue|title }} </p> 
     {% endif %}
 
     {% if title == "secteurs" %} 
-    <p> Ville: {{ session.lieuVue|title }} </p> 
-    <p> Bâtiment: {{ session.batiment|title }} </p>
+        <p> Ville: {{ session.lieuVue|title }} </p> 
+        <p> Bâtiment: {{ session.batiment|title }} </p>
     {% endif %}
 
     {% if title == 'matériels' %}
-    <p> Ville: {{ session.lieuVue|title }} </p> 
-    <p> Bâtiment: {{ session.batiment|title }} </p>
-    <p> Secteur: {{ session.secteur|title }} </p> 
+        <p> Ville: {{ session.lieuVue|title }} </p> 
+        <p> Bâtiment: {{ session.batiment|title }} </p>
+        <p> Secteur: {{ session.secteur|title }} </p> 
     {% endif %}   
 
-<div class="container">
-<h1>Voici la liste des {{ title }} </h1>
+    <div class="text-center">
+        <h1>Voici la liste des {{ title }} </h1>
+    </div>
+    <div class="container">    
+        <table class="table table-bordered"> 
+            <tr class="colorActifList">
+                <th>{{ title|title }}</th>                                        
+                <th>Action</th>            
+            </tr>   
+            {% for value in value %}  
+            <tr>  
+                <td> {{ value.nom }} </td>                             
+                <td>
+                {% if "matériels" not in title %}   
+                    <a href='{{ title|title }}={{ value.id }} '><i class="fas fa-eye fa-2x"></i></a>
+                {% endif %}
+                <a id="modifier" href='modifier-{{ title }}={{ value.id }} '><i class="fas fa-edit fa-2x"></i></a>
+
+                <a href='supprimer-{{ title }}={{ value.id }} '><i class="far fa-trash-alt fa-2x"></i></a> 
+                </td>
+            </tr>        
+            {% endfor %}
+            </table>
+        <i id="add" class="fas fa-plus-circle fa-2x"><p class="add">Ajouter</p></i>
+    </div>
 </div>
-<div class="container">    
-    <table> 
-        <tr>
-            <th>{{ title|title }}</th>                                        
-            <th>Voir</th>
-            <th>Editer</th>
-            <th>Supprimer</th>
-        </tr>   
-{% for value in value %}  
-        <tr>
-            <td> {{ value.nom }} </td>                    
-            <td><a href='{{ title|title }}={{ value.id }} '><i class="fas fa-eye fa-lg"></i></a></td> 
-            <td><a href='modifier={{ value.id }} '><i class="fas fa-edit fa-lg"></i></a></td> 
-            <td><a href='supprimer={{ value.id }} '><i class="far fa-trash-alt fa-lg"></i></a></td> 
-        </tr>        
-{% endfor %}
-    </table>
-   <a href='Ajouter-{{ title }}'><i class="fas fa-user-plus fa-2x"></i></a>
+<div class="row justify-content-center">
+    <div class="w-25" id="ajout">
+        <span class="text-center">
+            {% if value.nom is defined %}
+            <form class="border" id="formModif" action="modification-{{ title }}" method="post"> 
+                <label for='{{ title }}'> Modifier {{ title }}:</label><br> 
+            {% else %} 
+            <form class="border" id="formAjout" action="Ajouter-{{ title }}" method="post"> 
+                <label for='{{ title }}'> Ajouter {{ title }}:</label><br>  
+            {% endif %}   
+                <input id="erreur" type="hidden" name="erreur" value="{{ erreur }}"/>
+                <input id="form_nom" type="text" name="{{ title }}" value="{{ value.nom }}"/><br>
+                <input type="hidden" name="id" value="{{ value.id }}" />
+                {% if value.nom is defined %}
+                    <input type='submit' name="Modifier" value="Modifier"/>
+                {% else %}
+                    <input id="valid" type='submit' name="Ajouter" value="Ajouter"/>
+                {% endif %}
+            </form>
+        </span>
+    </div>
 </div>
+
 {% endblock %}    
