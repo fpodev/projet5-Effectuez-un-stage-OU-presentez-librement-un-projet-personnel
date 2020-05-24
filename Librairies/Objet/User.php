@@ -1,6 +1,12 @@
 <?php
 namespace App\Objet;
-
+/*
+Author: fpodev (fpodev@gmx.fr)
+User.php (c) 2020
+Desc: L'objet user
+Created:  2020-04-14T08:10:34.130Z
+Modified: !date!
+*/
 
 use App\Objet\ExtendsObjet;
 
@@ -23,7 +29,7 @@ class User extends ExtendsObjet
     public function isValid()
     {
         return !(empty($this->nom) || empty($this->prenom) || empty($this->email || empty($this->niveau) || empty($this->lieu)));
-    }
+    }    
     //setter    
     public function setLieu($lieu)
     {

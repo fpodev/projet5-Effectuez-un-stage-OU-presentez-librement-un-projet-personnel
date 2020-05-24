@@ -1,39 +1,32 @@
 <?php
 namespace App\Objet;
-
+/*
+Author: fpodev (fpodev@gmx.fr)
+Materiel.php (c) 2020
+Desc: Objet materiel
+Created:  2020-04-13T14:03:28.788Z
+Modified: !date!
+*/
 use App\Objet\ExtendsObjet;
 class Materiel extends ExtendsObjet
 {         
     private $id_secteur; 
-    private $id_batiment;
-    private $id_lieu;    
- 
-    public function isValid()
+    
+    
+     public function isValid()
     {
-        return !(empty($this->name) || empty($this->id_secteur) || empty($this->id_batiment) || empty($this->id_lieu));
+        return !(empty($this->nom) || empty($this->id_secteur));
     }
-    //setter 
-    public function setId_lieu($id_lieu)
+    public function isValidUpdate()
     {
-        $this->id_lieu = (int)$id_lieu;
+        return !(empty($this->nom));
     }
-    public function setId_batiment($id_batiment)
-    {
-        $this->id_batiment = (int)$id_batiment;
-    }
+    //setter     
     public function setId_secteur($id_secteur)
     {
         $this->id_secteur = (int)$id_secteur;                 
     }  
-    //getter 
-    public function id_lieu()
-    {
-        return $this->id_lieu;
-    }
-    public function id_batiment()
-    {
-        return $this->id_batiment;
-    }
+    //getter      
     public function id_secteur()
     {
         return $this->id_secteur;

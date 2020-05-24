@@ -31,12 +31,8 @@ class Travaux extends ExtendsObjet
 
     const DESCRIPTION_INVALIDE = 2,
           DETAIL_INVALIDE = 3,
-          URGENCE_INVALIDE = 4;          
- 
-   /* public function isValid()
-    {                                        
-                return                                      
-    }*/
+          URGENCE_INVALIDE = 4;         
+  
     public function validDemande()
     {
         return !(empty($this->descriptions) 
@@ -111,7 +107,7 @@ class Travaux extends ExtendsObjet
     } 
     public function setUrgence($urgence)    
     {
-        if(empty($urgence))
+        if(!is_int($urgence) || empty($urgence))
         {
             $this->erreurs[] = self::URGENCE_INVALIDE;
         }
