@@ -4,12 +4,12 @@ namespace App\Controller;
 /*
 Author: fpodev (fpodev@gmx.fr)
 ApiController.php (c) 2020
-Desc: description
+Desc: Gére les informations reçus ou envoyés avec l'api pour traitement avec la BDD
 Created:  2020-05-02T16:08:19.250Z
 Modified: !date!
 */
 use App\Objet\Travaux;
-use App\Objet\ConnexionDb;
+use App\ConnexionBDD\ConnexionDb;
 use App\model\TravauxModel;
 
 class ApiController{
