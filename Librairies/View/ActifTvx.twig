@@ -1,7 +1,7 @@
 {#
 Author: fpodev (fpodev@gmx.fr)
 ActifTvx.twig (c) 2020
-Desc: description
+Desc: Page qui récupére les differents actifs au fur et à mesure, pour faire une demande de travaux.
 Created:  2020-04-20T13:48:42.440Z
 Modified: !date!
 #}
@@ -9,7 +9,8 @@ Modified: !date!
 
 {% block title %}Liste {{ title }} {% endblock %}
 
-{% block content %}  
+{% block content %} 
+{% include 'NavBar.twig' only %}
     {% if title == "bâtiment" %} 
     <div class="card col-md-2">
         <p> Ville: {{ session.lieuVue|title }} </p> 
