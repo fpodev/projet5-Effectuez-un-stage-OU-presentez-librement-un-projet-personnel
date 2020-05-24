@@ -1,3 +1,12 @@
+<?php
+/*
+Author: fpodev (fpodev@gmx.fr)
+userView.php (c) 2020
+Desc: Page de confirmation envoyé par mail à la création d'un nouvel utilisateur
+Created:  2020-05-24T13:56:04.768Z
+Modified: !date!
+*/
+?>
 <!DOCTYPE html>
 <html lang="Fr">
 <head>
