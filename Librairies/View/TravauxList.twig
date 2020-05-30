@@ -18,9 +18,9 @@ Modified: !date!
 <table class="table table-bordered">
   <thead>
     <tr>
-      <th>Numero</th>
+      <th class="user_responsive">Numero</th>
       <th>Description</th>      
-      <th>Urgence</th>
+      <th class="user_responsive">Urgence</th>
       <th>Bâtiment</th>
       <th>Matériel</th>
       <th>Date demande</th> 
@@ -30,9 +30,9 @@ Modified: !date!
   <tbody>
   {% for tvx in tvx %}  
     <tr>      
-      <td>{{ tvx.id }}</td>      
+      <td class="user_responsive">{{ tvx.id }}</td>      
       <td>{{ tvx.descriptions }}</td>
-      <td>{{ tvx.urgence }}</td>
+      <td class="user_responsive">{{ tvx.urgence }}</td>
       <td>{{ tvx.nBatiment }}
       <td>{{ tvx.nom }}</td>
       <td>{{ tvx.date_demande|format_datetime(locale='fr') }}</td> 
