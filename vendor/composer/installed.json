@@ -1,17 +1,17 @@
 [
     {
         "name": "phpmailer/phpmailer",
-        "version": "v6.1.5",
-        "version_normalized": "6.1.5.0",
+        "version": "v6.1.6",
+        "version_normalized": "6.1.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/PHPMailer/PHPMailer.git",
-            "reference": "a8bf068f64a580302026e484ee29511f661b2ad3"
+            "reference": "c2796cb1cb99d7717290b48c4e6f32cb6c60b7b3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/a8bf068f64a580302026e484ee29511f661b2ad3",
-            "reference": "a8bf068f64a580302026e484ee29511f661b2ad3",
+            "url": "https://api.github.com/repos/PHPMailer/PHPMailer/zipball/c2796cb1cb99d7717290b48c4e6f32cb6c60b7b3",
+            "reference": "c2796cb1cb99d7717290b48c4e6f32cb6c60b7b3",
             "shasum": ""
         },
         "require": {
@@ -32,7 +32,7 @@
             "stevenmaguire/oauth2-microsoft": "Needed for Microsoft XOAUTH2 authentication",
             "symfony/polyfill-mbstring": "To support UTF-8 if the Mbstring PHP extension is not enabled (^1.2)"
         },
-        "time": "2020-03-14T14:23:48+00:00",
+        "time": "2020-05-27T12:24:03+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -64,32 +64,24 @@
         "description": "PHPMailer is a full-featured email creation and transfer class for PHP",
         "funding": [
             {
-                "url": "https://marcus.bointon.com/donations/",
-                "type": "custom"
-            },
-            {
-                "url": "https://github.com/Synchro",
+                "url": "https://github.com/synchro",
                 "type": "github"
-            },
-            {
-                "url": "https://www.patreon.com/marcusbointon",
-                "type": "patreon"
             }
         ]
     },
     {
         "name": "symfony/intl",
-        "version": "v5.0.7",
-        "version_normalized": "5.0.7.0",
+        "version": "v5.0.8",
+        "version_normalized": "5.0.8.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/intl.git",
-            "reference": "a02d65b026413150223c010db3000028bf9770eb"
+            "reference": "dc50ad5039ac685ca87306a346dc119cacdfea25"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/intl/zipball/a02d65b026413150223c010db3000028bf9770eb",
-            "reference": "a02d65b026413150223c010db3000028bf9770eb",
+            "url": "https://api.github.com/repos/symfony/intl/zipball/dc50ad5039ac685ca87306a346dc119cacdfea25",
+            "reference": "dc50ad5039ac685ca87306a346dc119cacdfea25",
             "shasum": ""
         },
         "require": {
@@ -102,7 +94,7 @@
         "suggest": {
             "ext-intl": "to use the component with locales other than \"en\""
         },
-        "time": "2020-03-27T16:56:45+00:00",
+        "time": "2020-04-12T14:40:17+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -152,21 +144,35 @@
             "intl",
             "l10n",
             "localization"
+        ],
+        "funding": [
+            {
+                "url": "https://symfony.com/sponsor",
+                "type": "custom"
+            },
+            {
+                "url": "https://github.com/fabpot",
+                "type": "github"
+            },
+            {
+                "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                "type": "tidelift"
+            }
         ]
     },
     {
         "name": "symfony/polyfill-ctype",
-        "version": "v1.15.0",
-        "version_normalized": "1.15.0.0",
+        "version": "v1.17.0",
+        "version_normalized": "1.17.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/polyfill-ctype.git",
-            "reference": "4719fa9c18b0464d399f1a63bf624b42b6fa8d14"
+            "reference": "e94c8b1bbe2bc77507a1056cdb06451c75b427f9"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/4719fa9c18b0464d399f1a63bf624b42b6fa8d14",
-            "reference": "4719fa9c18b0464d399f1a63bf624b42b6fa8d14",
+            "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/e94c8b1bbe2bc77507a1056cdb06451c75b427f9",
+            "reference": "e94c8b1bbe2bc77507a1056cdb06451c75b427f9",
             "shasum": ""
         },
         "require": {
@@ -175,11 +181,11 @@
         "suggest": {
             "ext-ctype": "For best performance"
         },
-        "time": "2020-02-27T09:26:54+00:00",
+        "time": "2020-05-12T16:14:59+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.15-dev"
+                "dev-master": "1.17-dev"
             }
         },
         "installation-source": "dist",
@@ -230,17 +236,17 @@
     },
     {
         "name": "symfony/polyfill-intl-icu",
-        "version": "v1.15.0",
-        "version_normalized": "1.15.0.0",
+        "version": "v1.17.0",
+        "version_normalized": "1.17.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/polyfill-intl-icu.git",
-            "reference": "9c281272735eb66476e0fa7381e03fb0d4b60197"
+            "reference": "4ef3923e4a86e1b6ef72d42be59dbf7d33a685e3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-intl-icu/zipball/9c281272735eb66476e0fa7381e03fb0d4b60197",
-            "reference": "9c281272735eb66476e0fa7381e03fb0d4b60197",
+            "url": "https://api.github.com/repos/symfony/polyfill-intl-icu/zipball/4ef3923e4a86e1b6ef72d42be59dbf7d33a685e3",
+            "reference": "4ef3923e4a86e1b6ef72d42be59dbf7d33a685e3",
             "shasum": ""
         },
         "require": {
@@ -250,11 +256,11 @@
         "suggest": {
             "ext-intl": "For best performance"
         },
-        "time": "2020-02-27T09:26:54+00:00",
+        "time": "2020-05-12T16:14:59+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.15-dev"
+                "dev-master": "1.17-dev"
             }
         },
         "installation-source": "dist",
@@ -304,17 +310,17 @@
     },
     {
         "name": "symfony/polyfill-mbstring",
-        "version": "v1.15.0",
-        "version_normalized": "1.15.0.0",
+        "version": "v1.17.0",
+        "version_normalized": "1.17.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/polyfill-mbstring.git",
-            "reference": "81ffd3a9c6d707be22e3012b827de1c9775fc5ac"
+            "reference": "fa79b11539418b02fc5e1897267673ba2c19419c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/81ffd3a9c6d707be22e3012b827de1c9775fc5ac",
-            "reference": "81ffd3a9c6d707be22e3012b827de1c9775fc5ac",
+            "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/fa79b11539418b02fc5e1897267673ba2c19419c",
+            "reference": "fa79b11539418b02fc5e1897267673ba2c19419c",
             "shasum": ""
         },
         "require": {
@@ -323,11 +329,11 @@
         "suggest": {
             "ext-mbstring": "For best performance"
         },
-        "time": "2020-03-09T19:04:49+00:00",
+        "time": "2020-05-12T16:47:27+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.15-dev"
+                "dev-master": "1.17-dev"
             }
         },
         "installation-source": "dist",
@@ -379,17 +385,17 @@
     },
     {
         "name": "symfony/var-dumper",
-        "version": "v5.0.7",
-        "version_normalized": "5.0.7.0",
+        "version": "v5.0.8",
+        "version_normalized": "5.0.8.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/var-dumper.git",
-            "reference": "f74a126acd701392eef2492a17228d42552c86b5"
+            "reference": "09de28632f16f81058a85fcf318397218272a07b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/var-dumper/zipball/f74a126acd701392eef2492a17228d42552c86b5",
-            "reference": "f74a126acd701392eef2492a17228d42552c86b5",
+            "url": "https://api.github.com/repos/symfony/var-dumper/zipball/09de28632f16f81058a85fcf318397218272a07b",
+            "reference": "09de28632f16f81058a85fcf318397218272a07b",
             "shasum": ""
         },
         "require": {
@@ -411,7 +417,7 @@
             "ext-intl": "To show region name in time zone dump",
             "symfony/console": "To use the ServerDumpCommand and/or the bin/var-dump-server script"
         },
-        "time": "2020-03-27T16:56:45+00:00",
+        "time": "2020-04-12T16:45:47+00:00",
         "bin": [
             "Resources/bin/var-dump-server"
         ],
@@ -452,6 +458,20 @@
         "keywords": [
             "debug",
             "dump"
+        ],
+        "funding": [
+            {
+                "url": "https://symfony.com/sponsor",
+                "type": "custom"
+            },
+            {
+                "url": "https://github.com/fabpot",
+                "type": "github"
+            },
+            {
+                "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                "type": "tidelift"
+            }
         ]
     },
     {
