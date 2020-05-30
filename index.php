@@ -9,6 +9,7 @@ Modified: !date!
 
 use App\Routeur\Routeur;
 require 'vendor/autoload.php';
+session_cache_limiter('private, must-revalidate');
 session_start();
 $router = new Routeur($_GET['url']);
 
