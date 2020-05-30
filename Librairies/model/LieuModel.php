@@ -80,5 +80,5 @@ class LieuModel{
         {
             throw new RuntimeException('Le lieu doit être valide pour être enregistré');
         }
-    } 
+    }    
 }
