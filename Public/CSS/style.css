@@ -9,6 +9,9 @@ h1{
   position: relative;
   z-index: 1;
 }
+#imgL{
+  margin-top: 52px;
+}
 /*Dans login*/
 .login{
   margin-top: 15%; 
@@ -121,11 +124,9 @@ h1{
   font-weight: bold;
 }
 /******/
-@media screen and (max-width: 952px) {
-  #img{
-    margin-left: 1;
-    width: 100%;
-    height: auto;
+@media screen and (min-width: 1920px){
+  #bienvenue{
+    margin-left: 357px;
   }
 }
 @media screen and (max-width: 926px) {
@@ -163,5 +164,25 @@ h1{
     .user_responsive{
       display: none;
     }   
-  }  
+  }
+  @media screen and (max-width: 800px){
+    #imgT{
+      margin-left:38px;
+    }
+  }
+  @media screen and (max-width: 768px){
+     #imgT{
+       margin-left: 52px;
+     }
+     h1{
+       font-size: 1.5rem;
+     }
+    }
+  }   
+  @media screen and (max-width: 375px){
+    #imgT{
+      margin-left: 8px;
+    } 
+           
+
 }
