@@ -11,15 +11,15 @@ Modified: !date!
 use App\Objet\ExtendsObjet;
 
 class User extends ExtendsObjet
-{    
-    
+{        
     private $prenom,
             $email,
             $pwd,
             $lieu,
             $niveau,
             $userAdd,
-            $userModif;
+            $userModif,
+            $id_lieu;
    
     const PRENOM_INVALIDE = 2,
           EMAIL_INVALIDE = 3, 
@@ -28,11 +28,12 @@ class User extends ExtendsObjet
         
     public function isValid()
     {
-        return !(empty($this->nom) || empty($this->prenom) || empty($this->email || empty($this->niveau) || empty($this->lieu)));
+        return !(empty($this->nom) || empty($this->prenom) 
+                || empty($this->email || empty($this->niveau) || empty($this->lieu)));
     }    
     //setter    
     public function setLieu($lieu)
-    {
+    {          
         if(empty($lieu))
         {
             $this->erreurs[] = self::LIEU_INVALIDE;
@@ -55,7 +56,7 @@ class User extends ExtendsObjet
     }
     public function setEmail($email)
     {
-       if(!is_string($email)|| empty($email) || !preg_match('/(@)(.)/' , $email)) 
+       if(!is_string($email)|| empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) 
        {
            $this->erreurs[] = self::EMAIL_INVALIDE;
        }
@@ -86,7 +87,11 @@ class User extends ExtendsObjet
     public function setUserModif($userModif)
     {
         $this->userModif = $userModif;
-    }    
+    }
+    public function setId_lieu($id_lieu)
+    {
+        $this->id_lieu = $id_lieu;
+    }  
     //getter
     
     public function lieu()
@@ -117,5 +122,10 @@ class User extends ExtendsObjet
     {
         return $this->userModif;
     }
+    public function id_lieu()
+    {
+        return $this->id_lieu;
+    }
+
 }
 
