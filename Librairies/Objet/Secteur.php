@@ -11,8 +11,7 @@ use App\Objet\ExtendsObjet;
 
 class Secteur extends ExtendsObjet
 {         
-    private $id_batiment; 
-    private $id_lieu;     
+    private $id_batiment;        
  
     public function isValid()
     {
