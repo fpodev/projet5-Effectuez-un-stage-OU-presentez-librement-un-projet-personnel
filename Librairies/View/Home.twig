@@ -10,28 +10,48 @@ Modified: !date!
 {% block title %} Accueil {% endblock %}
 
 {% block content %} 
-  {% include 'NavBar.twig' only %}                       
-<div id="home" class="container">
-  {% if session.niveau  == '0' %}  
-    <div class="row">                   
-        {% include 'Lieu.twig' only %} 
-        {% include 'Batiment.twig' only %}
-        {% include 'Utilisateur.twig' only %}
-        {% include 'TvxDemande.twig' only %}
-        {% include 'InfoTravaux.twig' only %}                          
-    </div>
-    {% elseif session.niveau == '1' %}
-    <div class="row">       
-        {% include 'Batiment.twig' only %}
-        {% include 'Utilisateur.twig' only %}
-        {% include 'TvxDemande.twig' only %}
-        {% include 'InfoTravaux.twig' only %}   
-    </div>        
-    {% else %} 
-    <div class="row">
-        {% include 'TvxDemande.twig' only %}
-        {% include 'InfoTravaux.twig' only %}   
-    </div>                  
-{% endif %}  
-</div>     
+  {% include 'NavBar.twig' only %} 
+<div class="text-center">                        
+  <div id="home" class="container">
+    {% if session.niveau  == '0' %}  
+      <div class="row"> 
+      <div id='imgL' class="col  col-lg-4">                       
+          {% include 'Lieu.twig' only %} 
+        </div>
+        <div id='imgB' class="col col-lg-4"> 
+          {% include 'Batiment.twig' only %}
+        </div>
+        <div id='img' class="col col-md-5 col-lg-4">  
+          {% include 'Utilisateur.twig' only %}
+        </div>
+        <div id='imgT' class="col col-md-6">  
+          {% include 'TvxDemande.twig' only %}
+        </div>
+        <div class="img" class="col col-md-6">  
+          {% include 'InfoTravaux.twig' only %} 
+        </div>                         
+      </div>
+      {% elseif session.niveau == '1' %}
+      <div class="row"> 
+      <div id="bat2" class="col-sm-6 col-md-6">      
+          {% include 'Batiment.twig' only %} 
+        </div>
+        <div id="user2" class="col-sm-6 col-md-6">          
+          {% include 'Utilisateur.twig' only %} 
+        </div> 
+        <div id="tvx2" class="col-sm-5 col-md-6">             
+          {% include 'TvxDemande.twig' only %}
+      </div> 
+          <div id="info2" class="col-sm-5 col-md-6">   
+          {% include 'InfoTravaux.twig' only %}
+      </div>   
+      </div>        
+      {% else %} 
+      <div class="row">
+          {% include 'TvxDemande.twig' only %}
+          {% include 'InfoTravaux.twig' only %}   
+      </div>                  
+  {% endif %}  
+  </div>  
+</div>   
 {% endblock %}
