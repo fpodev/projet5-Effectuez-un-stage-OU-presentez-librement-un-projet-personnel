@@ -54,18 +54,16 @@ Modified: !date!
                     <p>le lieu est invalide!</p>
                 {% endif %}
                 <label for="lieu">Lieu:</label><br>
-                <select name="id_technicien" required> 
-                {% if session.niveau == 0 %}                                        
+                {% if 0 in session.niveau %}   
+                <select name="id_technicien" required>                                                      
                     <option value="{{ uniqueLieu.id }}">{{ uniqueLieu.nom }}</option> 
                     {% for lieuList in lieuList %}                                       
                     <option value={{ lieuList.id }}>{{ lieuList.nom }}</option>                          
                     {% endfor %}                
                 </select><br> 
-                {% else %}
-                <input type="hidden" name="lieu" value="{{ session.lieuId }}"/>                       
-                <input type="text" name="lieuName" value="{{ session.lieu }}"/><br>             
                 {% endif %}
-
+                <input type="hidden" name="lieu" value="{{ session.lieuId }}"/>                       
+                <input type="text" name="lieuName" value="{{ session.lieu }}" readonly /><br>
                 {% if 5 in user %}
                     <p>Vous devez sélectionner un nivau</p>
                 {% endif %}
