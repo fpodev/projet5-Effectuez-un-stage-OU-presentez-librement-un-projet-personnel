@@ -14,13 +14,16 @@ Modified: !date!
  <div class=container>  
     <div class='text-center'>
         <h1>Modification mot de passe</h1> 
-        <form action="Modification-mot-de-passe" method="post">           
+        <form action="Modification-mot-de-passe" method="post">   
+               
             <label for="pass">Votre mot de passe actuel:</label></br>
             <input type="password" name='passActuel'/></br>
+            <p>{{ erreur }}</p>
             <label for="newPass">Nouveau mot de passe:</label></br>
             <input type="password" name='passNew'/></br>
             <label for="confirmPass">Confirmer votre nouveau mot de passe:</label></br>
             <input type="password" name="passConfirm" /></br>
+            <p>{{ erreur }}
             <input type="submit" name="valider" value="Valider" />         
         </form>
     </div>  
