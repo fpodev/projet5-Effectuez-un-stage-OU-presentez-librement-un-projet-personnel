@@ -69,10 +69,9 @@ class TravauxController {
                                                  
             $value = $this->verif($id);
 
-            if($value != FALSE){                
-                foreach($value as $idLieu)  
-                         
-                $techList = $this->user->listTech($idLieu['nLieu']);  
+            if($value != FALSE){                              
+                    
+                $techList = $this->user->listTech($value['nLieu']);  
 
                 if(stristr($_SERVER['REQUEST_URI'], 'edit-travaux=')){
                     $title = "Modifier la demande de travaux";                
@@ -103,7 +102,7 @@ class TravauxController {
                 ]            
                 );                              
         if($travaux->validDemande()) 
-        {            
+        {         
             $this->travaux->save($travaux);
             $this->travauxList();
         }
