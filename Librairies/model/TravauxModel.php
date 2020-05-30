@@ -37,43 +37,74 @@ class TravauxModel{
 
         $q->execute();
     }
-    public function countAll()
-    {
-        $_SESSION['lieuId'] = 'null' || $_SESSION['lieuId'] ;
-        
-        return $this->db->query('SELECT COUNT(*) FROM Travaux WHERE date_fin IS NULL AND id_lieu ='. $_SESSION["lieuId"].'') ->fetchColumn(); 
+    //compte tout les travaux qui ne sont pas terminés
+    public function countAll()    {             
+        if(isset($_SESSION['niveau']) && $_SESSION['niveau'] == 0){
+            return $this->db->query('SELECT COUNT(*) FROM Travaux WHERE date_fin IS NULL') ->fetchColumn();
+        }
+        else{
+            return $this->db->query('SELECT COUNT(*) FROM Travaux WHERE date_fin IS NULL AND id_lieu ='. $_SESSION["lieuId"].'') ->fetchColumn(); 
+
+        }
     }
+    //Compte les travaux du technicien quand celui-ci ce connect pour voir quel sont ceux qui lui sont programmés
     public function countUser($id)
-    {
+    {          
         return $this->db->query('SELECT COUNT(*) FROM Travaux WHERE id_technicien = '.$id.' AND date_fin IS NULL')->fetchColumn(); 
     }
+    //compte les travaux qui sont planifiés
     public function countPlanif()
-    {     
-        return $this->db->query('SELECT COUNT(date_prevu) FROM Travaux WHERE id_lieu = '.$_SESSION['lieuId'].' AND date_fin IS NULL')->fetchColumn();                         
+    {                   
+        if(isset($_SESSION['niveau']) && $_SESSION['niveau'] == 0){
+            var_dump($_SESSION['niveau']); 
+         return $this->db->query('SELECT COUNT(date_prevu) FROM Travaux WHERE date_fin IS NULL')->fetchColumn();                         
+
+        }
+        else{
+            return $this->db->query('SELECT COUNT(date_prevu) FROM Travaux WHERE id_lieu = '.$_SESSION['lieuId'].' AND date_fin IS NULL')->fetchColumn();                         
+
+        }
     }
     public function delete($id)
     {        
         $this->db->exec('DELETE FROM Travaux WHERE id= '.(int)$id);
     }
+    //$param = NULL ou NOT NULL
     public function travauxList($param)
     {
-        $q = $this->db->query('SELECT Travaux.id, Travaux.descriptions, Travaux.urgence, Travaux.id_demandeur, Travaux.date_demande, Materiel.nom, Batiment.nom AS "nBatiment"
+        if($_SESSION['niveau'] == 0){
+            $q = $this->db->prepare('SELECT Travaux.id, Travaux.descriptions, Travaux.urgence, Travaux.id_demandeur, Travaux.date_demande, Materiel.nom, Batiment.nom AS "nBatiment"
                                FROM Travaux 
                                INNER JOIN Materiel 
                                ON Travaux.id_materiel = Materiel.id
                                INNER JOIN Batiment
                                ON Travaux.id_batiment = Batiment.id
-                               WHERE Travaux.date_prevu IS '.$param.' AND Travaux.id_lieu = '.$_SESSION['lieuId'].' AND date_fin IS NULL');       
-            
-        $travauxList = $q->fetchAll(PDO::FETCH_ASSOC);
+                               WHERE Travaux.date_prevu IS '.$param.' AND date_fin IS NULL');       
+        }
+        else{
+            $q = $this->db->prepare('SELECT Travaux.id, Travaux.descriptions, Travaux.urgence, Travaux.id_demandeur, Travaux.date_demande, Materiel.nom, Batiment.nom AS "nBatiment"
+                               FROM Travaux 
+                               INNER JOIN Materiel 
+                               ON Travaux.id_materiel = Materiel.id
+                               INNER JOIN Batiment
+                               ON Travaux.id_batiment = Batiment.id
+                               WHERE Travaux.date_prevu IS '.$param.' AND Travaux.id_lieu = '.$_SESSION['lieuId'].' AND date_fin IS NULL');
+        }
+                 
+        $q->execute();
         
+        $q->setFetchMode(PDO::FETCH_ASSOC);
+
+        $travauxList = $q->fetchAll();
+       
         $q->closeCursor();
     
         return $travauxList;
     }
+    //retourne la liste des travaux programmés d'un technicien quand celui-ci ce connect
     public function technicienList($id){
         $param = "NULL";
-        $q = $this->db->query('SELECT  Travaux.id, descriptions, detail, urgence, date_demande, date_prevu, date_debut, date_fin, externe, Lieu.id AS "nLieu", Lieu.nom AS "lieu", Batiment.nom AS "batiment", Materiel.nom AS "materiel", Secteur.nom AS "secteur", demandeur.email, technicien.id AS techId, technicien.nom AS techNom 
+        $q = $this->db->prepare('SELECT  Travaux.id, descriptions, detail, urgence, date_demande, date_prevu, date_debut, date_fin, externe, Lieu.id AS "nLieu", Lieu.nom AS "lieu", Batiment.nom AS "batiment", Materiel.nom AS "materiel", Secteur.nom AS "secteur", demandeur.email, technicien.id AS techId, technicien.nom AS techNom 
                                 FROM Travaux  
                                 INNER JOIN Lieu                               
                                 ON Travaux.id_lieu = Lieu.id                              
@@ -87,8 +118,12 @@ class TravauxModel{
                                 ON Travaux.id_demandeur = demandeur.id  
                                 LEFT JOIN User as technicien
                                 ON Travaux.id_technicien = technicien.id  
-                                WHERE Travaux.id_lieu = '.$_SESSION['lieuId'].' AND technicien.id = '.$id.' AND Travaux.date_fin IS '.$param.'');       
+                                WHERE Travaux.id_lieu = :id_lieu AND technicien.id = :id AND Travaux.date_fin IS NULL');       
      
+        $q->bindValue(':id_lieu', $_SESSION['lieuId'], PDO::PARAM_INT);                    
+       
+        $q->bindValue(':id', $id, PDO::PARAM_INT);       
+
         $q->execute();   
 
         $q->setFetchMode(PDO::FETCH_ASSOC);
@@ -124,10 +159,10 @@ class TravauxModel{
         
         $q->setFetchMode(PDO::FETCH_ASSOC);
 
-        $travaux = $q->fetchAll();  
+        $travaux = $q->fetch();  
        
         $q->closeCursor();
-           
+         
         return $travaux;       
     }
     protected function update(Travaux $travaux)
@@ -146,21 +181,25 @@ class TravauxModel{
         $q->bindValue(':id', $travaux->id(), PDO::PARAM_INT);
 
         $q->execute();
-    }  
+    } 
+    //Valeur ajoutée par le technicien quand celui-ci commence la tâche
     protected function start(Travaux $travaux)
     {
         $q = $this->db->prepare('UPDATE Travaux SET date_debut = :date_debut
                                 WHERE id = :id');         
        
-       $q->bindValue(':date_debut', $travaux->date_debut());                          
+       $q->bindValue(':date_debut', $travaux->date_debut());
+
         $q->bindValue(':id', $travaux->id(), PDO::PARAM_INT);
 
         $q->execute(); 
     }
+   //Valeur ajoutée par le technicien quand celui-ci à terminé la tâche
     protected function close(Travaux $travaux)
     {
         $q = $this->db->prepare('UPDATE Travaux SET date_fin = :date_fin 
-                                WHERE id = :id');         
+                                WHERE id = :id');   
+
         $q->bindValue(':date_fin', $travaux->date_fin());                          
         $q->bindValue(':id', $travaux->id(), PDO::PARAM_INT);
 
