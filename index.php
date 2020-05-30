@@ -31,21 +31,22 @@ $router->get('supprimer-villes=:id', "Lieu#supprimeLieu");
 $router->get('modifier-villes=:id', 'Lieu#uniqueLieu');
 $router->post('modification-villes', "Lieu#updateLieu");
 $router->post('Ajouter-villes', 'Lieu#addLieu');
-
 $router->get('Villes=:id', 'Batiment#batimentList');
+
 $router->get('Gestion-Batiments', 'Batiment#batimentList');
 $router->get('supprimer-bâtiments=:id', 'Batiment#supprimeBatiment');
 $router->post('modification-bâtiments', "Batiment#updateBatiment");
 $router->get('modifier-bâtiments=:id', 'Batiment#uniqueBatiment');
 $router->post('Ajouter-bâtiments', 'Batiment#addBatiment');
-
 $router->get('Bâtiments=:id', 'Secteur#secteurList');
+
 $router->get('supprimer-secteurs=:id', 'Secteur#supprimeSecteur');
 $router->get('modifier-secteurs=:id', 'Secteur#uniqueSecteur');
 $router->post('Ajouter-secteur', "Secteur#addSecteur");
 $router->post('modification-secteurs', "Secteur#updateSecteur");
-
 $router->get('Secteurs=:id', 'Materiel#materielList');
+
+
 $router->get('supprimer-matériels=:id', 'Materiel#supprimeMateriel');
 $router->post('Ajouter-matériels', "Materiel#addMateriel");
 $router->post('modification-matériels', "Materiel#updateMateriel");
