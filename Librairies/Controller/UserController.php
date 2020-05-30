@@ -34,7 +34,7 @@ class UserController{
         //Création d'un mot de passe aléatoire.      
         $pass = substr(str_shuffle(
             'abcdefghijklmnopqrstuvwxyzABCEFGHIJKLMNOPQRSTUVWXYZ0123456789'),1, 10);
-        
+
         $nom = htmlspecialchars($_POST['nom']);
         $prenom = htmlspecialchars($_POST['prenom']);
         $email = htmlspecialchars($_POST['email']);
@@ -47,7 +47,7 @@ class UserController{
                 'prenom' => $prenom,
                 'email' => $email,
                 'lieu' => $lieu,
-                //hashe le mot de passe pour plus de sécurité                
+                //hashe le mot de passe               
                 'pwd' => password_hash($pass, PASSWORD_DEFAULT),
                 'niveau' => $niveau,
                 'userAdd' => $_SESSION['identifiant'],
@@ -114,19 +114,25 @@ class UserController{
     } 
     public function listUser(){
             $title = "utilisateurs";
-            $userList = $this->user->listUser();                             
+            $userList = $this->user->listUser();
+                                         
             $this->render->view('UserList', ['userList' => $userList, 'title' => $title]); 
     }    
     public function uniqueUser($id){  
         $user = $this->verif($id);
         if($user == true){            
             $title = "utilisateurs";
-            $this->render->view('CreateUser', ['user' => $user, 'title' => $title]);  
+            $uniqueLieu = $this->ville->uniqueLieu($user->id_lieu());
+            $lieuList = $this->ville->lieuList();
+
+            $this->render->view('CreateUser', ['user' => $user, 'title' => $title, 'uniqueLieu' => $uniqueLieu, 'lieuList' => $lieuList]); 
         }     
     }   
     public function CreatePage(){ 
-            $title = "utilisateur";           
-            $this->render->view('CreateUser', ['title'=> $title]);          
+            $title = "utilisateur";  
+            $lieuList = $this->ville->lieuList();  
+
+            $this->render->view('CreateUser', ['title'=> $title, 'lieuList' => $lieuList]);          
     }
     public function deleteUser($id){
         $user = $this->verif($id);
@@ -134,32 +140,58 @@ class UserController{
             $this->user->delete($id);
             $this->listUser();
         }        
-    }
-    public function connexion(){ 
+    }    
+    public function home($id_user = null){
+       if(!isset($_SESSION['niveau'] )){
+           $_SESSION = 'null';
+           $userTvx = 'null' ;   
+       } 
+       elseif(isset($_SESSION) && $_SESSION['niveau'] == 2){
+         $id_user = $_SESSION['id_user'];  
+         $userTvx = $this->travaux->countUser($id_user);          
+       }
+       else{
+           $userTvx = 'null';
+       }                                           
+          $countAll =  $this->travaux->countAll();
+          $countPlanif = $this->travaux->countPlanif();             
+          $countNew = $countAll - $countPlanif;       
+       
+          $this->render->view('Home', ['countNew'=> $countNew, 'countPlanif' => $countPlanif, 'countUser' => $userTvx]);   
+                
+        } 
+        public function connexion(){
+            
             $identifiant = htmlspecialchars($_POST['identifiant']); 
             $pass = htmlspecialchars($_POST['pass']);   
 
             $resultat = $this->user->connexion($identifiant);
-                                        
-            $okPass = password_verify($pass, $resultat['pwd']);        
+                                   
+            $okPass = password_verify($pass, $resultat->pwd());     
+            
             if(!$resultat || !$okPass)       
             {
-                echo 'Mauvais identifiant ou mot de passe';
-                $this->render->view('Login'); 
+                $erreur = 'Mauvais identifiant ou mot de passe';
+                $this->render->view('Login', ['erreur' => $erreur]); 
             }
             else
             {   
-                $ville = $this->ville->uniqueLieu($resultat['id_lieu']);               
-
+               /* if(password_needs_rehash($pass, PASSWORD_DEFAULT)) { 
+                    // If so, create a new hash, and replace the old one 
+                    $newHash = password_hash($pass, PASSWORD_DEFAULT);
+                }   */
+                $ville = $this->ville->uniqueLieu($resultat->id_lieu());               
+                
                 $_SESSION['identifiant'] = $identifiant;             
                 $_SESSION['cookie'] = $_COOKIE;                                      
-                $_SESSION['prenom'] = $resultat['prenom'];
-                $_SESSION['lieuId'] = $resultat['id_lieu'];
+                $_SESSION['prenom'] = $resultat->prenom();
+                $_SESSION['lieuId'] = $resultat->id_lieu();
                 $_SESSION['lieu'] = $ville->nom();
-                $_SESSION['niveau'] = $resultat['niveau'];
-                $_SESSION['id_user'] = $resultat['id'];                 
-              
-                $this->home(); 
+                $_SESSION['niveau'] = $resultat->niveau();
+                $_SESSION['id_user'] = $resultat->id();     
+                     $id_user = $resultat->id();
+
+                $this->home($id_user); 
             }
         }                                           
     public function changePass(){  
@@ -169,39 +201,24 @@ class UserController{
          
             $resultat = $this->user->connexion($_SESSION["identifiant"]);
 
-            $okPass = password_verify($actuelPass, $resultat['pwd']);        
+            $okPass = password_verify($actuelPass, $resultat->pwd());        
                 if(!$resultat || !$okPass)
                 {
-                    echo 'erreur ancien mot de passe';
+                    $erreur = "Erreur ancien mot de passe";
+                    $this->render->view('ChangePass', ['erreur' => $erreur]);
                 }
                 elseif($passNew === $passConfirm)                     
                 {               
-                    $this->user->nouveauPass($_SESSION['identifiant']);                    
-                    
-                    session_destroy();
+                    $this->user->nouveauPass($_SESSION['identifiant'], $passNew);                    
+                   
                     $this->render->view('home'); 
                 }
                 else
                 {
-                    echo 'Erreur confimation nouveau mot de pass'; 
-                    include('Librairies/View/changePassView.php');
+                    $erreur = "Mauvais mot de passe confirmé"; 
+                    $this->render->view('ChangePass', ['erreur' => $erreur]);
                 }    
-    }  
-    public function home(){ 
-       if(empty($_SESSION['niveau']) || $_SESSION['niveau'] != '2'){
-            $userTvx = 'null';
-       }           
-        else
-         {                  
-        $userTvx = $this->travaux->countUser($_SESSION['id_user']); 
-         };                        
-          $countAll =  $this->travaux->countAll();
-          $countPlanif = $this->travaux->countPlanif();             
-          $countNew = $countAll - $countPlanif;                      
-         
-            $this->render->view('Home', ['countNew'=> $countNew, 'countPlanif' => $countPlanif, 'countUser' => $userTvx]);   
-                
-        } 
+    }      
     public function changePage(){
         $this->render->view('ChangePass');
     } 
