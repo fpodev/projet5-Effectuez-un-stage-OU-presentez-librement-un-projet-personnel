@@ -5,7 +5,6 @@ Desc: Gestion de divers dynamique des pages.
 Created:  2020-05-13T15:42:37.533Z
 Modified: !date!
 */
-
 class Effect{
     constructor(){        
         this.add = document.getElementById("add");        
