@@ -75,10 +75,7 @@ Modified: !date!
                             {% for tech in tech %}                                       
                             <option value={{ tech.id }}>{{ tech.nom }}</option>                          
                             {% endfor %}                
-                        </select>  
-                                                    
-                        <input type="hidden" name="id" value="{{ tvx.id }}"/><br>
-                        <label for="externe">Intervention société externe:</label><br>
+                        </select> <input type="hidden" name="id" value="{{ tvx.id }}"/><br>                       <label for="externe">Intervention société externe:</label><br>
                         <input type="radio" name="externe" value="oui" {% if tvx.externe == oui %} checked {% endif %} />Oui
                         <input type="radio" name="externe" value="non" {% if tvx.externe == non %} checked {% endif %} />Non <br>
                         {% if tvx.date_prevu == null %}
