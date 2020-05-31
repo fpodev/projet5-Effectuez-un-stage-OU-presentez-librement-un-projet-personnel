@@ -29,5 +29,4 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
                 $retour["message"] = "Voici la liste des travaux planifiés";                                       
                 $retour["travaux"] =  $valueList; 
            }      
-      
-echo json_encode($retour);
+             echo json_encode($retour);
