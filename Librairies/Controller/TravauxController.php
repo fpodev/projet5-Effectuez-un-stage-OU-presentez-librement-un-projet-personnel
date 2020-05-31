@@ -132,8 +132,7 @@ class TravauxController {
             $travaux->setId($_POST['id']);
         }        
         if($travaux->validPlanif()) 
-        { 
-            
+        {             
             $this->travaux->save($travaux);
             $this->travauxList();
         }
