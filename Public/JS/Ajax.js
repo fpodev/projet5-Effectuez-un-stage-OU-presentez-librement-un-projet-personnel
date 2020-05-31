@@ -19,11 +19,13 @@ function ajaxGet(url, callback) {
     req.addEventListener("error", function () {
         console.error("Erreur réseau avec l'URL " + url);
     });
-    req.send(null);
+    req.send(null);    
 }
-function ajaxPost(url, data, callback) {    
+
+function ajaxPost(url, data, callback) { 
+    
     var req = new XMLHttpRequest();
-    req.open("POST", url);
+    req.open("POST", url, false);
     req.addEventListener("load", function () {
         if (req.status >= 200 && req.status < 400) {
                // Appelle la fonction callback en lui passant la réponse de la requête
@@ -36,7 +38,6 @@ function ajaxPost(url, data, callback) {
         console.error("Erreur réseau avec l'URL " + url);
     });  
         req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        data = JSON.stringify(data);  
-           
-        req.send(data);      
-}
+        data = JSON.stringify(data);                 
+        req.send(data);                          
+      }
