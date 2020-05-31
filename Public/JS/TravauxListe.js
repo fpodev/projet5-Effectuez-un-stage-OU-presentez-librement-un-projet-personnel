@@ -13,7 +13,7 @@ class TravauxListe{
         this.listeTravaux(); 
         this.return();               
     }
-listeTravaux(){
+listeTravaux(){    
     ajaxGet(this.urlGet, function(response){        
         let data = JSON.parse(response);         
         let travaux = data['travaux'];                   
@@ -33,7 +33,7 @@ listeTravaux(){
             let linkElt = row.insertCell(5);           
             let link2 = document.createElement("i") ;                                   
             link2.className = "fas fa-eye fa-2x";
-            let form = document.createElement("form");                                                               
+            let form = document.createElement("form");                                                                     
             let id = document.createElement("input");
             id.className = "masque";
             id.type = "hidden";
@@ -58,39 +58,39 @@ listeTravaux(){
                    id.name ='id_fin';
                    link.className = "btn btn-danger";  
                    link.textContent = "Stop";
-                   form.addEventListener("submit", function(){
+                   form.addEventListener("submit", function(){                   
                     let fin = {
-                           id_fin: form.elements.id_fin.value   
-                    }                                                                            
-                 ajaxPost(this.urlPost, fin, function(response){                   
+                                id_fin: form.elements.id_fin.value   
+                              } 
+                                                                                                                   
+                    ajaxPost(this.urlPost, fin, function(response){                                    
                     let data = JSON.parse(response); 
-                    let success = data['valeur'];
-                    alert(success);
+                    let success = data['valeur']; 
+                    alert(success);                             
                  });                 
                 }.bind(this)); 
             }
             else{ 
                 id.name ='id_debut';
                 link.className = "btn btn-primary"; 
-                link.textContent = "Start"; 
-                form.addEventListener("submit", function(){                
+                link.textContent = "Start";                
+                form.addEventListener("submit", function(){                                                    
                     let debut = {
-                           id_debut: form.elements.id_debut.value   
-                    }                                                                                             
-                 ajaxPost(this.urlPost, debut, function(response){                    
-                     let data = JSON.parse(response); 
-                     let success = data['valeur'];
-                     alert(success);
-                 }); 
-                           
+                                    id_debut: form.elements.id_debut.value   
+                                }                                 
+                                                                                                                                                                                                                                                                                           
+                    ajaxPost(this.urlPost, debut, function(response){                         
+                    let data = JSON.parse(response); 
+                    let success = data['valeur'];
+                    alert(success);
+                    });                                                   
              }.bind(this));             
-            };
+            };               
             linkElt.appendChild(link2);            
             linkElt.appendChild(separateur)
             linkElt.appendChild(form);
             form.appendChild(id);
-            form.appendChild(link);          
-                       
+            form.appendChild(link);                              
          }.bind(this));        
 }.bind(this));           
 }   
