@@ -40,7 +40,6 @@ class UserController{
         $email = htmlspecialchars($_POST['email']);
         $lieu = htmlspecialchars($_POST['lieu']);
         $niveau = htmlspecialchars($_POST['niveau']);
-
         $user = new User(
             [
                 'nom' => $nom,
@@ -175,11 +174,7 @@ class UserController{
                 $this->render->view('Login', ['erreur' => $erreur]); 
             }
             else
-            {   
-               /* if(password_needs_rehash($pass, PASSWORD_DEFAULT)) { 
-                    // If so, create a new hash, and replace the old one 
-                    $newHash = password_hash($pass, PASSWORD_DEFAULT);
-                }   */
+            {                 
                 $ville = $this->ville->uniqueLieu($resultat->id_lieu());               
                 
                 $_SESSION['identifiant'] = $identifiant;             
