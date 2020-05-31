@@ -42,9 +42,8 @@ class TravauxModel{
         if(isset($_SESSION['niveau']) && $_SESSION['niveau'] == 0){
             return $this->db->query('SELECT COUNT(*) FROM Travaux WHERE date_fin IS NULL') ->fetchColumn();
         }
-        else{
+        elseif(isset($_SESSION['lieuId'])){
             return $this->db->query('SELECT COUNT(*) FROM Travaux WHERE date_fin IS NULL AND id_lieu ='. $_SESSION["lieuId"].'') ->fetchColumn(); 
-
         }
     }
     //Compte les travaux du technicien quand celui-ci ce connect pour voir quel sont ceux qui lui sont programmés
@@ -55,12 +54,11 @@ class TravauxModel{
     //compte les travaux qui sont planifiés
     public function countPlanif()
     {                   
-        if(isset($_SESSION['niveau']) && $_SESSION['niveau'] == 0){
-            var_dump($_SESSION['niveau']); 
+        if(isset($_SESSION['niveau']) && $_SESSION['niveau'] == 0){           
          return $this->db->query('SELECT COUNT(date_prevu) FROM Travaux WHERE date_fin IS NULL')->fetchColumn();                         
 
         }
-        else{
+        elseif(isset($_SESSION['lieuId'])){
             return $this->db->query('SELECT COUNT(date_prevu) FROM Travaux WHERE id_lieu = '.$_SESSION['lieuId'].' AND date_fin IS NULL')->fetchColumn();                         
 
         }
@@ -102,8 +100,8 @@ class TravauxModel{
         return $travauxList;
     }
     //retourne la liste des travaux programmés d'un technicien quand celui-ci ce connect
-    public function technicienList($id){
-        $param = "NULL";
+    public function technicienList($id, $sessionLieu){      
+       
         $q = $this->db->prepare('SELECT  Travaux.id, descriptions, detail, urgence, date_demande, date_prevu, date_debut, date_fin, externe, Lieu.id AS "nLieu", Lieu.nom AS "lieu", Batiment.nom AS "batiment", Materiel.nom AS "materiel", Secteur.nom AS "secteur", demandeur.email, technicien.id AS techId, technicien.nom AS techNom 
                                 FROM Travaux  
                                 INNER JOIN Lieu                               
@@ -120,7 +118,7 @@ class TravauxModel{
                                 ON Travaux.id_technicien = technicien.id  
                                 WHERE Travaux.id_lieu = :id_lieu AND technicien.id = :id AND Travaux.date_fin IS NULL');       
      
-        $q->bindValue(':id_lieu', $_SESSION['lieuId'], PDO::PARAM_INT);                    
+        $q->bindValue(':id_lieu', $sessionLieu, PDO::PARAM_INT);                    
        
         $q->bindValue(':id', $id, PDO::PARAM_INT);       
 
@@ -129,11 +127,11 @@ class TravauxModel{
         $q->setFetchMode(PDO::FETCH_ASSOC);
 
         $travaux = $q->fetchAll();  
-
+       
         $q->closeCursor();
 
         return $travaux;
-
+        
 }
     public function uniqueTravaux($id)
     {
@@ -188,8 +186,7 @@ class TravauxModel{
         $q = $this->db->prepare('UPDATE Travaux SET date_debut = :date_debut
                                 WHERE id = :id');         
        
-       $q->bindValue(':date_debut', $travaux->date_debut());
-
+        $q->bindValue(':date_debut', $travaux->date_debut());
         $q->bindValue(':id', $travaux->id(), PDO::PARAM_INT);
 
         $q->execute(); 
