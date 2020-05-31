@@ -22,33 +22,35 @@ public function __construct(){
     $this->travaux = new TravauxModel($db);           
     $this->date = new \DateTime();
 }
-public function api(){             
-              $nombres = $this->travaux->countAll(); 
-              $valueList = $this->travaux->technicienList($_SESSION['id_user']);  
-                                                                                
+public function api(){                   
+            if(isset($_SESSION['id_user']) && isset($_SESSION['lieuId'])){
+               $valueList = $this->travaux->technicienList($_SESSION['id_user'], ($_SESSION['lieuId']));                
+            }                                                                  
               include ('Librairies/Api/ApiGet.php');                            
   }
 public function debut($donnee){
+   
   $travaux = new Travaux(                     
     [                                                                                                              
         'date_debut' => $this->date->format('Y-m-d H:i:s'),                                                                 
     ]            
     );
     if(isset($donnee->id_debut)) 
-{
+    {
     $travaux->setId($donnee->id_debut);
-}      
-if($travaux->validStart()) 
-{ 
-   $this->travaux->save($travaux);
-    http_response_code(201);
-    return $message = "l'heure debut bien ajoutée";
+    }      
+    if($travaux->validStart()) 
+    { 
+    $this->travaux->save($travaux);
+
+    http_response_code(201);   
+    return $message = "Début de travaux enregistré";
     }
     else{
      http_response_code(503);
-     return $message = " l'heure debut n'a pas été ajoutée";
+     return $message = "Début de travaux non enregistré";     
     }    
-
+    
 }
 public function fin($donnee){
   $travaux = new Travaux(                     
@@ -64,11 +66,11 @@ if($travaux->validClose())
 { 
    $this->travaux->save($travaux);
     http_response_code(201);
-    return $message = "l'heure de fin bien ajoutée";
+    return $message = "Fin de travaux enregistré";
     }
     else{
      http_response_code(503);
-     return $message = " l'heure de fin n'a pas été ajoutée";
+     return $message = "Fin de travaux non enregistré";
     }    
 
 }
