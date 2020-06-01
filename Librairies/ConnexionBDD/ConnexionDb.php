@@ -16,7 +16,7 @@ class ConnexionDb
     public static function getPDO()
     {   
         try{
-            $db = new PDO('mysql:host=localhost;dbname=GMAO;charset=utf8','fabrice', 'Frbrl7C90848467');
+            $db = new PDO('mysql:host=localhost;dbname=GMAO;charset=utf8','fabrice', 'xxxxxxx');
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);              
         }catch(Exception $e){
             echo $e -> getmessage();
