@@ -15,7 +15,7 @@ Modified: !date!
   <div id="home" class="container">
     {% if session.niveau  == '0' %}  
       <div class="row"> 
-      <div id='imgL' class="col  col-lg-4">                       
+        <div id='imgL' class="col  col-lg-4">                       
           {% include 'Lieu.twig' only %} 
         </div>
         <div id='imgB' class="col col-lg-4"> 
@@ -41,15 +41,19 @@ Modified: !date!
         </div> 
         <div id="tvx2" class="col-sm-5 col-md-6">             
           {% include 'TvxDemande.twig' only %}
-      </div> 
-          <div id="info2" class="col-sm-5 col-md-6">   
+        </div> 
+        <div id="info2" class="col-sm-5 col-md-6">   
           {% include 'InfoTravaux.twig' only %}
-      </div>   
+        </div>   
       </div>        
       {% else %} 
-      <div class="row">          
+      <div class="row"> 
+        <div class="col-md-6">         
           {% include 'TvxDemande.twig' only %}
-          {% include 'InfoTravaux.twig' only %}   
+        </div>
+        <div class="col-md-6">  
+          {% include 'InfoTravaux.twig' only %}  
+        </div> 
       </div>                  
   {% endif %}  
   </div>  
