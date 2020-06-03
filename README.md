@@ -1,6 +1,6 @@
 # projet5-Effectuez-un-stage-OU-pr-sentez-librement-un-projet-personnel
 
-Projet libre présenté dans le cadre de la formation dévelloppeur web junior chez openclassrooms.
+Projet libre présenté dans le cadre de la formation développeur web junior chez openclassrooms.
 
 J'ai fait une GMAO (Gestion de Maintenance Assistée par Ordinnateur). 4 niveaux d'utilisateur avec différents droits
 
