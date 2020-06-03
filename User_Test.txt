@@ -1,0 +1,4 @@
+ Tech1(niveau 2):id="faux@mail.com" pwd="LOdzvJctyu"
+ Tech2(niveau 2): id="Pre2@mail.com" pwd=""uUjamAEsLZ"
+ niveau 1: id="fpo@gmail.com" pwd="RQbHsj3Yqx"
+ niveau 0: id="fpo@gmx.fr" pwd="b8R1HUBs46" 
