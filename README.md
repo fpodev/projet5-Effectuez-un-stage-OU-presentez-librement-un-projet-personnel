@@ -1,4 +1,4 @@
-# projet5-Effectuez-un-stage-OU-pr-sentez-librement-un-projet-personnel
+# projet5-Effectuez-un-stage-OU-presentez-librement-un-projet-personnel
 
 Projet libre présenté dans le cadre de la formation développeur web junior chez openclassrooms.
 
